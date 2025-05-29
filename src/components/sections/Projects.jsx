@@ -97,7 +97,7 @@ export const Projects = () => {
                 ))}
               </div>
               <a
-                href="#"
+                href="https://shopping-cart-dharkwhales-projects.vercel.app/"
                 className="text-blue-400 hover:text-blue-200 transition-colors"
               >
                 View Project
