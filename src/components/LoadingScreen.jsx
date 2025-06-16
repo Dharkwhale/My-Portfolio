@@ -6,25 +6,25 @@ export const LoadingScreen = ({ onComplete }) => {
   const fullText = "<Hello Recruiter />";
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     let index = 0;
 
     const interval = setInterval(() => {
-      setText(fullText.substring(0, index + 1));
       index++;
+      setText(fullText.substring(0, index));
 
       if (index === fullText.length) {
         clearInterval(interval);
-
-        // Wait for 1.5s blinking, then call onComplete
         setTimeout(() => {
           setShow(false);
-          onComplete();
+          onComplete?.(); // safely call if defined
         }, 1500);
       }
     }, 100);
 
     return () => clearInterval(interval);
-  }, [onComplete]);
+  }, []);
 
   if (!show) return null;
 
