@@ -66,7 +66,7 @@ export const Projects = () => {
                 ))}
               </div>
               <a
-                href="https://go-voyatek-travels.vercel.app/"
+                href="https://new-travel-app.netlify.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-200 transition-colors"

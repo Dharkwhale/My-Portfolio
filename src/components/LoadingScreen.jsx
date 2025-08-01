@@ -3,10 +3,15 @@ import { useEffect, useState } from "react";
 export const LoadingScreen = ({ onComplete }) => {
   const [text, setText] = useState("");
   const [show, setShow] = useState(true);
+  const [mounted, setMounted] = useState(false);
   const fullText = "<Hello Recruiter />";
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
 
     let index = 0;
 
@@ -24,7 +29,7 @@ export const LoadingScreen = ({ onComplete }) => {
     }, 100);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [mounted, onComplete]);
 
   if (!show) return null;
 
