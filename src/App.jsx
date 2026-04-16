@@ -12,7 +12,7 @@ import { Contact } from "./components/sections/Contact"
 function App() {
   // Initialize isLoading as a boolean (true means it's still loading)
   const [isLoading, setIsLoading] = useState(true)
-  const [menuOpen, setMenuOpen] = useState(true)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   // Optional: Add a useEffect to automatically hide loading screen after a timeout
   useEffect(() => {
