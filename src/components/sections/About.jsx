@@ -50,7 +50,7 @@ export const About = () => {
                   <strong>Computer Engineering</strong> – The Federal Polytechnic Ilaro (2012–2017)
                 </li>
                 <li>
-                  Related Coursework: Data Engineering, Blockchain Development, Python
+                  Computer Engineering
                 </li>
               </ul>
             </div>

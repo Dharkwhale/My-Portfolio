@@ -1,7 +1,8 @@
 import { RevealOnScroll } from "../RevealOnScroll";
 import projectrip from '../../assets/projectrip.PNG'
 import projectcart from '../../assets/projectcart.PNG'
-import projecthack from '../../assets/projecthack.PNG'
+import projectark from '../../assets/projectark.PNG'
+import projectportt from '../../assets/projectportt.PNG'
 
 export const Projects = () => {
   return (
@@ -16,13 +17,13 @@ export const Projects = () => {
             {/* Project 1 */}
             <div className="text-left p-4 rounded-xl border border-white/10 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_2px_8px_rgba(59,130,246,0.2)] transition">
               <img
-                src={projecthack}
-                alt="Blockchain Wallet Login"
+                src={projectark}
+                alt="Crypto Token Analyzer"
                 className="rounded-xl mb-4 w-full h-48 object-cover"
               />
-              <h3 className="text-xl font-bold mb-2">Blockchain Wallet Login</h3>
+              <h3 className="text-xl font-bold mb-2">Crypto Token Analyzer</h3>
               <p className="text-gray-400 mb-4">
-                Developed a responsive web app enabling users to securely log in using blockchain wallets (e.g., MetaMask), removing the need for traditional credentials. Leveraged Web3 for seamless, privacy-focused access.
+                Built a comprehensive tool for analyzing cryptocurrency tokens, providing real-time data visualization and market insights to empower informed investment decisions.
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
                 {["React", "TailwindCSS", "JavaScript"].map((tech, key) => (
@@ -35,7 +36,7 @@ export const Projects = () => {
                 ))}
               </div>
               <a
-                href="https://hack-ku6v0t9g4-dharkwhales-projects.vercel.app/"
+                href="https://ark-nine.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-200 transition-colors"
@@ -98,6 +99,38 @@ export const Projects = () => {
               </div>
               <a
                 href="https://shopping-cart-dharkwhales-projects.vercel.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-200 transition-colors"
+              >
+                View Project
+              </a>
+            </div>
+            {/* Project 4 */}
+            <div className="text-left p-4 rounded-xl border border-white/10 hover:-translate-y-1 hover:border-blue-500/30 hover:shadow-[0_2px_8px_rgba(59,130,246,0.2)] transition">
+              <img
+                src={projectportt}
+                alt="Shopping Cart"
+                className="rounded-xl mb-4 w-full h-48 object-cover"
+              />
+              <h3 className="text-xl font-bold mb-2">Portfolio Website</h3>
+              <p className="text-gray-400 mb-4">
+                designed a fully functional portfolio website using React and TailwindCSS, showcasing projects, skills, and experience with a modern, responsive design and smooth animations.
+              </p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {["React", "TailwindCSS", "JavaScript"].map((tech, key) => (
+                  <span
+                    key={key}
+                    className="bg-blue-500/10 text-blue-500 py-1 px-3 rounded-full text-sm hover:bg-blue-500/20"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+              <a
+                href="https://chris-portfolio-demo.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-blue-400 hover:text-blue-200 transition-colors"
               >
                 View Project
