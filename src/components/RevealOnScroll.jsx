@@ -1,28 +1,16 @@
-import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
-export const RevealOnScroll = ({ children }) => {
-  const ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && ref.current) {
-          ref.current.classList.add("visible");
-        }
-      },
-      {
-        threshold: 0.2,
-        rootMargin: "0px 0px -50px 0px",
-      }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={ref} className="reveal">
-      {children}
-    </div>
-  );
-};
+export const RevealOnScroll = ({ children, delay = 0 }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 40 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-80px" }}
+    transition={{
+      duration: 0.65,
+      delay,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    }}
+  >
+    {children}
+  </motion.div>
+);

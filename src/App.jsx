@@ -1,38 +1,48 @@
-
 import "./App.css"
-import { LoadingScreen } from "./components/LoadingScreen"
 import "./index.css"
 import { useState, useEffect } from "react"
+import { AnimatePresence } from "framer-motion"
+import { LoadingScreen } from "./components/LoadingScreen"
 import { Navbar } from "./components/Navbar"
-import {Home} from "./components/sections/Home"
-import {About} from "./components/sections/About"
-import {Projects} from "./components/sections/Projects"
+import { Home } from "./components/sections/Home"
+import { About } from "./components/sections/About"
+import { Projects } from "./components/sections/Projects"
 import { Contact } from "./components/sections/Contact"
 
 function App() {
-  // Initialize isLoading as a boolean (true means it's still loading)
   const [isLoading, setIsLoading] = useState(true)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [cursor, setCursor] = useState({ x: 0, y: 0 })
 
-  // Optional: Add a useEffect to automatically hide loading screen after a timeout
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 3000) // 3 seconds timeout as fallback
-
-    return () => clearTimeout(timer)
+    const move = (e) => setCursor({ x: e.clientX, y: e.clientY })
+    window.addEventListener("mousemove", move, { passive: true })
+    return () => window.removeEventListener("mousemove", move)
   }, [])
 
   return (
     <>
-      {isLoading && <LoadingScreen onComplete={() => setIsLoading(false)} />}
+      {/* AnimatePresence here keeps LoadingScreen mounted until its exit animation finishes */}
+      <AnimatePresence>
+        {isLoading && (
+          <LoadingScreen key="loading" onComplete={() => setIsLoading(false)} />
+        )}
+      </AnimatePresence>
 
       <div
         className={`min-h-screen transition-opacity duration-700 ${
           !isLoading ? "opacity-100" : "opacity-0"
-        } bg-black text-gray-100`}
+        } bg-[#0a0a0a] text-slate-100`}
       >
-        <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
+        {/* Cursor spotlight */}
+        <div
+          className="pointer-events-none fixed inset-0 z-30 transition-all duration-200"
+          style={{
+            background: `radial-gradient(600px at ${cursor.x}px ${cursor.y}px, rgba(59,130,246,0.07), transparent 80%)`,
+          }}
+        />
+
+        <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
         <Home />
         <About />
         <Projects />

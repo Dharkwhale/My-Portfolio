@@ -1,51 +1,51 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+
+html {
+  scroll-behavior: smooth;
+}
 
 html, body {
   margin: 0;
   padding: 0;
   font-family: "Space Grotesk", sans-serif;
   background: #0a0a0a;
-  color: #f3f4f6;
+  color: #f1f5f9;
+  overflow-x: hidden;
 }
 
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: #60a5fa; }
 
-@layer utilities {
-  @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-  }
-
-.animate-blink {
-  animation: blink 0.8s step-end infinite;
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-  @keyframes loading {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(250%);
-    }
-  }
-
-.animate-loading-bar {
-  animation: loading 0.8s ease infinite;
+/* Floating orb animations */
+@keyframes float-orb {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -40px) scale(1.06); }
+  66%       { transform: translate(-20px, 20px) scale(0.94); }
+}
+@keyframes float-orb-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(-40px, 25px) scale(0.95); }
+  66%       { transform: translate(30px, -35px) scale(1.05); }
 }
 
-}
+.orb-1 { animation: float-orb    14s ease-in-out infinite; }
+.orb-2 { animation: float-orb-2  18s ease-in-out infinite; }
+.orb-3 { animation: float-orb    22s ease-in-out infinite reverse; }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s ease, transfrom 0.7s ease;
+/* Loading bar */
+@keyframes loading-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
 }
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+.animate-loading-bar { animation: loading-sweep 1.2s ease infinite; }

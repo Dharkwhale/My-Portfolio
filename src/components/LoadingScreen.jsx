@@ -1,44 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 export const LoadingScreen = ({ onComplete }) => {
   const [text, setText] = useState("");
+  const onCompleteRef = useRef(onComplete);
+  onCompleteRef.current = onComplete;
+
   const fullText = "<Hello Recruiter />";
 
   useEffect(() => {
     let index = 0;
-    
-    // Safety check: don't start if we're somehow already finished
     const interval = setInterval(() => {
-      // Use the functional update to ensure we have the latest index
       index++;
-      const currentText = fullText.substring(0, index);
-      setText(currentText);
-
+      setText(fullText.substring(0, index));
       if (index >= fullText.length) {
         clearInterval(interval);
-        
-        // Give the user time to actually read the full text
-        setTimeout(() => {
-          onComplete?.(); 
-        }, 1000);
+        // wait for the user to read, then signal the parent to unmount
+        setTimeout(() => onCompleteRef.current?.(), 1000);
       }
-    }, 100);
-
+    }, 75);
     return () => clearInterval(interval);
-  }, [onComplete]); // Removed 'mounted' to reduce complexity
+  }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white dark:bg-black">
-      <div className="mb-4 font-mono text-4xl font-bold text-black dark:text-white">
-        {/* We use a non-breaking space or min-height to prevent layout jump */}
-        <span className="min-h-[1.2em] inline-block">{text}</span>
-        <span className="animate-pulse ml-1">|</span>
-      </div>
+    <motion.div
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0a]"
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6, ease: "easeInOut" }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="mb-8 font-mono text-3xl md:text-5xl font-bold"
+      >
+        <span className="gradient-text">{text}</span>
+        <motion.span
+          animate={{ opacity: [1, 0, 1] }}
+          transition={{ duration: 0.8, repeat: Infinity }}
+          className="text-blue-400 ml-1"
+        >
+          |
+        </motion.span>
+      </motion.div>
 
-      <div className="w-[200px] h-[1px] bg-gray-800 rounded relative overflow-hidden">
-        <div className="absolute inset-y-0 left-0 bg-blue-500 shadow-[0_0_15px_#3b82f6] animate-loading-bar w-full" 
-             style={{ animationDuration: '2s' }} />
+      <div className="w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
+        <div className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 animate-loading-bar rounded-full" />
       </div>
-    </div>
+    </motion.div>
   );
 };
