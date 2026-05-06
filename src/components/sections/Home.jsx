@@ -95,7 +95,7 @@ export const Home = () => {
           </a>
 
           <a
-            href="https://docs.google.com/document/d/115EVbOh1Qb3zFqkH3aqNDnF5Gil6Gnml20WlfCXhcf0/edit?usp=drive_link"
+            href="https://drive.google.com/file/d/1Sgsp-4_BvTLWR4TjYlLHYOhWE6FYUaiI/view?usp=drive_link"
             target="_blank"
             rel="noopener noreferrer"
             className="px-8 py-3.5 border border-white/10 text-slate-300 rounded-xl font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/5"
