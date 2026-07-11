@@ -61,11 +61,15 @@ linked (github.com/Dharkwhale/sentinel-threat-hunter, "view the source"; no demo
 Event-intelligence model stays OFF the projects list — it is company work under privacy
 policies; the capabilities row line is the only public trace. Do not add it as a document.
 
+**Stories completed (142091a…bccd218):** Sentinel fully told (incl. hard decision:
+forcing confirm-or-deny judgment vs. summarizing) with SOC dashboard figure
+(src/assets/sentinelimg.jpeg) and repo link. Trip Planner = honest "note" treatment
+(assessment build — documents support `note` instead of story; never fabricate).
+Crypto Token Analyzer renamed to its real name **Ark Analytics**, full user story,
+stack corrected to next.js/typescript/coinmarketcap api.
+
 **Open items:**
-- Sentinel figure: user has the SOC dashboard screenshot; needs to save it to
-  src/assets/sentinel.PNG, then wire the import in Projects.jsx (image swaps the document
-  from full-width to the split figure layout automatically).
-- Sentinel "hard decision" story slot still placeholder.
-- Stories pending: Trip Itinerary Planner, Crypto Token Analyzer, Portfolio Website.
-- Method bullets rewrite (About).
-- `projectportt.PNG` shows a third-party demo identity — user will swap the asset later.
+- Portfolio Website: story-or-cut decision pending (weakest document; third-party demo
+  identity baked into projectportt.PNG).
+- Method bullets rewrite (About) — still old values copy.
+- Consider deploy/share flow once content is final.

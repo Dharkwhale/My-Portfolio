@@ -1,7 +1,6 @@
 import { RevealOnScroll, RuleReveal } from "../RevealOnScroll";
 import projectrip from "../../assets/projectrip.PNG";
 import projectark from "../../assets/projectark.PNG";
-import projectportt from "../../assets/projectportt.PNG";
 import projectasap from "../../assets/projectasap.PNG";
 import sentinelimg from "../../assets/sentinelimg.jpeg";
 
@@ -83,14 +82,6 @@ const documents = [
       impact:
         "It proved the idea: one developer-built dashboard consolidating live prices and trending data without overwhelming the user. Honestly an early-stage product — no on-chain analysis, whale tracking or portfolio tools yet — but the architecture validated the real-time workflow and gave later iterations a foundation worth building on.",
     },
-  },
-  {
-    title: "Portfolio Website",
-    abstract:
-      "A modern, responsive portfolio in React and TailwindCSS showcasing projects, skills and experience.",
-    image: projectportt,
-    stack: "react · tailwindcss · javascript",
-    link: "https://chris-portfolio-demo.netlify.app/",
   },
 ];
 
@@ -225,13 +216,12 @@ export const Projects = () => {
             Selected work
           </h2>
           <span className="font-mono text-[12px] text-annotation">
-            {documents.length} documents · narratives in progress
+            {documents.length} documents
           </span>
         </div>
         <p className="mt-4 max-w-[58ch] text-[15px] leading-relaxed text-annotation">
           Each project is written up as a working document — the problem, the
-          approach, the one hard decision, the impact. The stories are being
-          written; the builds are live now.
+          approach, the one hard decision, the impact.
         </p>
       </RevealOnScroll>
 
