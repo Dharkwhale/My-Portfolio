@@ -67,12 +67,22 @@ const documents = [
     note: "Assessment build, kept for what it demonstrates: dense UI composition and disciplined endpoint consumption — every list, filter and timeline view is API-fed. Rotates out as new documents land.",
   },
   {
-    title: "Crypto Token Analyzer",
+    title: "Ark Analytics",
     abstract:
-      "Analyze crypto tokens with real-time data visualization and market insights for informed decisions.",
+      "A crypto market dashboard that consolidates live prices, trending coins and market activity into one clean read — built for everyday users, not trading desks.",
     image: projectark,
-    stack: "react · tailwindcss · javascript",
+    stack: "next.js · react · typescript · tailwindcss · coinmarketcap api",
     link: "https://ark-nine.vercel.app/",
+    story: {
+      problem:
+        "Crypto traders juggle exchange apps, X threads, Telegram groups, CoinMarketCap and separate charting sites just to know what the market is doing — a fragmented workflow that fails exactly when volatility demands speed. Ark puts the key signals on one dashboard: not a pro terminal, a faster read for everyday users.",
+      approach:
+        "A responsive dashboard first: Next.js, React, TypeScript and Tailwind with reusable components, a backend endpoint feeding each section only the data it needs — no bulk loads into the UI — and the CoinMarketCap API driving live prices on the scrolling hero. The structure optimizes for speed, readability, and room to add analytics later.",
+      decision:
+        "How often to refresh prices. Crypto moves every second, but chasing every tick means re-render storms across every component sharing the data. I chose controlled-interval fetches from the backend over continuous updates — prices can run a few seconds behind the market, but charts and scrolling stay smooth. Performance over ultra-high-frequency accuracy was the practical call for v1.",
+      impact:
+        "It proved the idea: one developer-built dashboard consolidating live prices and trending data without overwhelming the user. Honestly an early-stage product — no on-chain analysis, whale tracking or portfolio tools yet — but the architecture validated the real-time workflow and gave later iterations a foundation worth building on.",
+    },
   },
   {
     title: "Portfolio Website",
