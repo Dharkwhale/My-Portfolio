@@ -4,10 +4,10 @@ import { EASE_CRISP } from "../../lib/motion";
 const RESUME_URL =
   "https://drive.google.com/file/d/1Sgsp-4_BvTLWR4TjYlLHYOhWE6FYUaiI/view?usp=drive_link";
 
-// Title-block data (the evolved colophon). Discipline wording pending
-// user sign-off on positioning copy — see docs/ai-memory/progress.md.
+// Title-block data (the evolved colophon). Wording user-approved 2026-07-11:
+// conservative discipline cell; the hero standfirst carries the AI positioning.
 const titleBlockData = [
-  { k: "discipline", v: "Frontend · AI" },
+  { k: "discipline", v: "Frontend Engineering" },
   { k: "stack", v: "React / Next.js / TS" },
   { k: "location", v: "Nigeria · Remote" },
   { k: "revision", v: "2026.07" },
@@ -101,15 +101,13 @@ export const Home = () => {
         </div>
 
         {/* ================= Standfirst + actions ================= */}
-        {/* Positioning copy: current shipped line retained pending user-approved
-            AI framing. Draft options live in the conversation — do not finalize here. */}
+        {/* Positioning line user-approved 2026-07-11. */}
         <motion.p
           {...rise(0.5)}
           className="mt-10 max-w-[54ch] text-[clamp(1.05rem,1rem+0.4vw,1.25rem)] leading-relaxed text-annotation"
         >
-          Frontend engineer building fast, considered web interfaces — turning
-          complex products into clean, reliable UI with React, Next.js and
-          TypeScript.
+          Frontend engineer with AI depth — strong interfaces first, working
+          knowledge of everything the model needs behind them.
         </motion.p>
 
         <motion.div
