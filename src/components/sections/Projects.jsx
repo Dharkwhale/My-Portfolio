@@ -3,6 +3,7 @@ import projectrip from "../../assets/projectrip.PNG";
 import projectark from "../../assets/projectark.PNG";
 import projectportt from "../../assets/projectportt.PNG";
 import projectasap from "../../assets/projectasap.PNG";
+import sentinelimg from "../../assets/sentinelimg.jpeg";
 
 // Each project is an issued document: header → figure → abstract → story.
 // Story slots (problem / approach / the hard decision / impact) hold the
@@ -40,9 +41,7 @@ const documents = [
     meta: "Splunk Agentic Ops Hackathon 2026 · solo build",
     abstract:
       "An autonomous agent that hunts security logs for attacks before any alert fires — reasoning like an analyst instead of reacting to thresholds.",
-    // SOC dashboard screenshot: waiting for the user to drop the file into
-    // src/assets/sentinel.PNG — then import it here like the others.
-    image: null,
+    image: sentinelimg,
     stack: "python · fastapi · react · splunk sdk · claude opus 4.8",
     link: "https://github.com/Dharkwhale/sentinel-threat-hunter",
     linkLabel: "view the source",
@@ -60,10 +59,12 @@ const documents = [
   {
     title: "Trip Itinerary Planner",
     abstract:
-      "Plan trips, manage budgets, book hotels and flights, and explore destinations with timeline views.",
+      "Trips, budgets, hotels and flights on one timeline — an interface-dense build that lives or dies on how cleanly it consumes its APIs.",
     image: projectrip,
     stack: "react · tailwindcss · javascript",
     link: "https://new-travel-app.netlify.app/",
+    // Honest register: an assessment build gets a note, not a war story.
+    note: "Assessment build, kept for what it demonstrates: dense UI composition and disciplined endpoint consumption — every list, filter and timeline view is API-fed. Rotates out as new documents land.",
   },
   {
     title: "Crypto Token Analyzer",
@@ -83,7 +84,20 @@ const documents = [
   },
 ];
 
-const StorySlots = ({ doc, wide }) => (
+// A document either tells its four-slot story, or carries an honest note
+// (e.g. assessment builds) — never a fabricated narrative.
+const StorySlots = ({ doc, wide }) => {
+  if (doc.note) {
+    return (
+      <div className="mt-7">
+        <p className="data-label">note</p>
+        <p className="mt-1.5 max-w-[52ch] text-[14px] leading-relaxed text-annotation">
+          {doc.note}
+        </p>
+      </div>
+    );
+  }
+  return (
   <div
     className={`mt-7 grid gap-x-8 gap-y-5 sm:grid-cols-2 ${
       wide ? "lg:grid-cols-4" : ""
@@ -107,7 +121,8 @@ const StorySlots = ({ doc, wide }) => (
       );
     })}
   </div>
-);
+  );
+};
 
 const Document = ({ doc, flip }) => (
   <article className="border-b border-rule py-12 last:border-b-0 md:py-16">
