@@ -5,7 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import reactPlugin from 'eslint-plugin-react'
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', '.agents', 'node_modules'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {

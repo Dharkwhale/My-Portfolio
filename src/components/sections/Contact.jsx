@@ -1,34 +1,12 @@
 import { useState, useRef } from "react";
-import { motion } from "framer-motion";
 import emailjs from "emailjs-com";
-import { FiGithub, FiLinkedin, FiMail, FiMapPin } from "react-icons/fi";
-import { RevealOnScroll } from "../RevealOnScroll";
+import { RevealOnScroll, RuleReveal } from "../RevealOnScroll";
 
-const socials = [
-  {
-    icon: <FiGithub size={18} />,
-    label: "GitHub",
-    href: "https://github.com/Dharkwhale",
-    value: "github.com/Dharkwhale",
-  },
-  {
-    icon: <FiLinkedin size={18} />,
-    label: "LinkedIn",
-    href: "https://linkedin.com/in/salman-sanusi",
-    value: "linkedin.com/in/salman-sanusi",
-  },
-  {
-    icon: <FiMail size={18} />,
-    label: "Email",
-    href: "mailto:tstundes@gmail.com",
-    value: "tstundes@gmail.com",
-  },
-  {
-    icon: <FiMapPin size={18} />,
-    label: "Location",
-    href: "#",
-    value: "Nigeria",
-  },
+const channels = [
+  { label: "email", href: "mailto:tstundes@gmail.com", value: "tstundes@gmail.com" },
+  { label: "github", href: "https://github.com/Dharkwhale", value: "github.com/Dharkwhale" },
+  { label: "linkedin", href: "https://linkedin.com/in/salman-sanusi", value: "linkedin.com/in/salman-sanusi" },
+  { label: "location", value: "Nigeria · Remote" },
 ];
 
 export const Contact = () => {
@@ -57,131 +35,152 @@ export const Contact = () => {
       });
   };
 
+  // Document field: bottom rule only; focus = the rule turns stamp-red
+  // (visible focus indicator — the global outline is replaced, not removed).
   const inputClass =
-    "w-full bg-white/[0.04] border border-white/10 rounded-xl px-4 py-3 text-white placeholder-slate-600 focus:outline-none focus:border-blue-500/60 focus:bg-blue-500/5 transition-all duration-200";
+    "w-full border-0 border-b-[1.5px] border-ink bg-transparent px-0 py-2.5 text-[15px] text-ink placeholder:text-annotation/60 transition-colors duration-200 focus:border-stamp focus-visible:outline-none";
 
   return (
-    <section id="contact" className="min-h-screen flex items-center justify-center py-28">
-      <div className="max-w-6xl mx-auto px-6 w-full">
-
-        {/* Heading */}
+    <section id="contact" className="relative scroll-mt-16 px-6 py-24 md:py-32">
+      <div className="mx-auto w-full max-w-6xl">
         <RevealOnScroll>
-          <div className="text-center mb-20">
-            <p className="text-blue-400 font-mono text-sm tracking-[0.25em] uppercase mb-3">
-              Let&apos;s talk
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold gradient-text">Get In Touch</h2>
-          </div>
+          <RuleReveal />
+          <h2 className="font-display mt-4 text-[clamp(1.9rem,4vw,2.6rem)] font-bold tracking-[-0.02em] text-ink">
+            Let&apos;s build something
+          </h2>
+          <p className="mt-5 max-w-[52ch] text-[clamp(1rem,0.95rem+0.3vw,1.125rem)] leading-relaxed text-annotation">
+            I&apos;m open to frontend roles and freelance work. Have a project, a
+            question, or just want to say hi? My inbox is open.
+          </p>
         </RevealOnScroll>
 
-        <div className="grid md:grid-cols-2 gap-14 items-start">
-
-          {/* Left — info */}
-          <RevealOnScroll delay={0.1}>
+        <div className="mt-14 grid gap-12 md:grid-cols-12 md:gap-10 lg:gap-12">
+          {/* Channels — a ruled table, not a card list */}
+          <RevealOnScroll delay={0.05} className="md:col-span-5">
             <div>
-              <p className="text-slate-300 text-lg leading-relaxed mb-10">
-                I&apos;m currently open to new opportunities. Whether you have a project
-                in mind, a question, or just want to say hi — my inbox is always open.
-              </p>
-
-              <div className="space-y-5">
-                {socials.map(({ icon, label, href, value }) => (
-                  <motion.a
+              <h3 className="data-label">channels</h3>
+              <ul className="mt-3">
+                {channels.map(({ label, href, value }) => (
+                  <li
                     key={label}
-                    href={href}
-                    target={href.startsWith("http") ? "_blank" : undefined}
-                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-                    whileHover={{ x: 4 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className="flex items-center gap-4 group"
+                    className="flex items-baseline justify-between gap-4 border-b border-rule py-4 last:border-b-0"
                   >
-                    <div className="p-3 rounded-xl bg-white/5 border border-white/10 text-blue-400 group-hover:bg-blue-500/10 group-hover:border-blue-500/30 transition-all">
-                      {icon}
-                    </div>
-                    <div>
-                      <p className="text-xs text-slate-500 font-mono uppercase tracking-wider">{label}</p>
-                      <p className="text-slate-300 group-hover:text-white transition-colors text-sm mt-0.5">{value}</p>
-                    </div>
-                  </motion.a>
+                    <span className="font-mono text-[12px] text-annotation">
+                      {label}
+                    </span>
+                    {href ? (
+                      <a
+                        href={href}
+                        target={href.startsWith("http") ? "_blank" : undefined}
+                        rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="doc-link text-[14.5px]"
+                      >
+                        {value}
+                      </a>
+                    ) : (
+                      <span className="text-[14.5px] text-ink">{value}</span>
+                    )}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </RevealOnScroll>
 
-          {/* Right — form */}
-          <RevealOnScroll delay={0.2}>
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="block text-sm text-slate-400 mb-2 font-medium">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className={inputClass}
-                  placeholder="Your name"
-                />
+          {/* Form — document fields */}
+          <RevealOnScroll delay={0.1} className="md:col-span-7">
+            <form ref={formRef} onSubmit={handleSubmit}>
+              <h3 className="data-label">correspondence</h3>
+              <div className="mt-3 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="name" className="data-label block">
+                    name
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    name="name"
+                    required
+                    autoComplete="name"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className={inputClass}
+                    placeholder="Your name"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="email" className="data-label block">
+                    email
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    required
+                    autoComplete="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className={inputClass}
+                    placeholder="you@example.com"
+                  />
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm text-slate-400 mb-2 font-medium">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className={inputClass}
-                  placeholder="you@example.com"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm text-slate-400 mb-2 font-medium">Message</label>
+              <div className="mt-6">
+                <label htmlFor="message" className="data-label block">
+                  message
+                </label>
                 <textarea
+                  id="message"
                   name="message"
                   rows={5}
                   required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className={`${inputClass} resize-none`}
-                  placeholder="Tell me about your project..."
+                  placeholder="Tell me about your project or role…"
                 />
               </div>
 
-              <motion.button
-                type="submit"
-                disabled={status === "sending"}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                className="w-full bg-blue-500 text-white py-3.5 px-6 rounded-xl font-semibold transition-all hover:bg-blue-400 hover:shadow-[0_0_30px_rgba(59,130,246,0.4)] disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {status === "sending"
-                  ? "Sending..."
-                  : status === "sent"
-                  ? "Message Sent!"
-                  : "Send Message"}
-              </motion.button>
+              <div className="mt-8 flex flex-wrap items-center gap-5">
+                {/* The one red action in this view */}
+                <button
+                  type="submit"
+                  disabled={status === "sending"}
+                  className="border-[1.5px] border-stamp px-6 py-3 text-[14.5px] font-medium text-stamp transition-colors duration-200 hover:bg-stamp hover:text-paper active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {status === "sending" ? "Sending…" : "Send message"}
+                </button>
 
-              {status === "error" && (
-                <p className="text-red-400 text-sm text-center">
-                  Something went wrong. Please try again.
+                {/* Reserved height — status changes cause zero layout shift */}
+                <p aria-live="polite" className="min-h-5 text-[14px]">
+                  {status === "sent" && (
+                    <span className="font-mono text-[12.5px] text-ink">
+                      received — I&apos;ll get back to you soon.
+                    </span>
+                  )}
+                  {status === "error" && (
+                    <span className="font-mono text-[12.5px] text-stamp">
+                      something went wrong. please try again.
+                    </span>
+                  )}
                 </p>
-              )}
+              </div>
             </form>
           </RevealOnScroll>
         </div>
 
-        {/* Footer */}
-        <div className="mt-24 pt-8 border-t border-white/5 text-center">
-          <p className="text-slate-600 text-sm font-mono">
-            Designed &amp; built by{" "}
-            <span className="gradient-text font-semibold">Salman Sanusi</span>
-            {" "}· {new Date().getFullYear()}
-          </p>
+        {/* Footer — the document's closing line */}
+        <div className="mt-24">
+          <div className="rule-hair" />
+          <div className="flex flex-col items-start justify-between gap-2 pt-6 sm:flex-row sm:items-baseline">
+            <p className="font-mono text-[12px] text-annotation">
+              © {new Date().getFullYear()} salman sanusi
+            </p>
+            <p className="font-mono text-[12px] text-annotation">
+              rev 2026.07 · set in schibsted grotesk &amp; fragment mono
+            </p>
+          </div>
         </div>
-
       </div>
     </section>
   );

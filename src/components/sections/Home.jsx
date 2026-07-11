@@ -1,142 +1,152 @@
-import { motion } from "framer-motion";
-import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
+import { motion, useReducedMotion } from "framer-motion";
+import { EASE_CRISP } from "../../lib/motion";
 
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: { staggerChildren: 0.13, delayChildren: 0.25 },
-  },
-};
+const RESUME_URL =
+  "https://drive.google.com/file/d/1Sgsp-4_BvTLWR4TjYlLHYOhWE6FYUaiI/view?usp=drive_link";
 
-const item = {
-  hidden: { opacity: 0, y: 28 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] },
-  },
-};
-
-const socials = [
-  { icon: <FiGithub size={20} />, href: "https://github.com/Dharkwhale", label: "GitHub" },
-  { icon: <FiLinkedin size={20} />, href: "https://linkedin.com/in/salman-sanusi", label: "LinkedIn" },
-  { icon: <FiMail size={20} />, href: "#contact", label: "Email" },
+// Title-block data (the evolved colophon). Discipline wording pending
+// user sign-off on positioning copy — see docs/ai-memory/progress.md.
+const titleBlockData = [
+  { k: "discipline", v: "Frontend · AI" },
+  { k: "stack", v: "React / Next.js / TS" },
+  { k: "location", v: "Nigeria · Remote" },
+  { k: "revision", v: "2026.07" },
 ];
 
 export const Home = () => {
+  const reduce = useReducedMotion();
+
+  // Rules draw in; content rises; the stamp hits last. Runs once, ~1.1s total.
+  const drawRule = (delay = 0, vertical = false) => ({
+    initial: reduce ? { opacity: 0 } : { [vertical ? "scaleY" : "scaleX"]: 0 },
+    animate: reduce ? { opacity: 1 } : { [vertical ? "scaleY" : "scaleX"]: 1 },
+    transition: { duration: reduce ? 0.15 : 0.45, delay: reduce ? 0 : delay, ease: EASE_CRISP },
+  });
+
+  const rise = (delay = 0) => ({
+    initial: { opacity: 0, y: reduce ? 0 : 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: reduce ? 0.15 : 0.45, delay: reduce ? 0 : delay, ease: EASE_CRISP },
+  });
+
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative flex min-h-[100dvh] items-center scroll-mt-16 px-6 pt-24 pb-16"
     >
-      {/* Animated background orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-        <div className="orb-1 absolute top-1/4 left-1/4 w-80 h-80 bg-blue-600/15 rounded-full blur-3xl" />
-        <div className="orb-2 absolute bottom-1/3 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
-        <div className="orb-3 absolute top-1/2 right-1/3 w-64 h-64 bg-violet-600/10 rounded-full blur-3xl" />
-      </div>
+      <div className="mx-auto w-full max-w-6xl">
+        {/* ================= Title block ================= */}
+        <div className="relative">
+          {/* Frame rules — drawn, not painted */}
+          <motion.span {...drawRule(0)} className="absolute inset-x-0 top-0 h-[1.5px] origin-left bg-ink" />
+          <motion.span {...drawRule(0.1)} className="absolute inset-x-0 bottom-0 h-[1.5px] origin-right bg-ink" />
+          <motion.span {...drawRule(0.05, true)} className="absolute inset-y-0 left-0 w-[1.5px] origin-top bg-ink" />
+          <motion.span {...drawRule(0.15, true)} className="absolute inset-y-0 right-0 w-[1.5px] origin-bottom bg-ink" />
 
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="relative z-10 text-center px-6 max-w-4xl mx-auto"
-      >
-        {/* Label */}
+          <div className="grid md:grid-cols-[1fr_250px] lg:grid-cols-[1fr_280px]">
+            {/* Name cell */}
+            <div className="p-6 sm:p-8 lg:p-10">
+              <motion.h1
+                {...rise(0.15)}
+                className="font-display text-[clamp(3.2rem,10vw,7.5rem)] font-extrabold leading-[0.94] tracking-[-0.035em] text-ink"
+              >
+                Salman
+                <br />
+                Sanusi
+              </motion.h1>
+
+              {/* The stamp — hits once, never repeats */}
+              <motion.span
+                initial={
+                  reduce
+                    ? { opacity: 0 }
+                    : { opacity: 0, scale: 1.4, rotate: -8 }
+                }
+                animate={
+                  reduce
+                    ? { opacity: 1 }
+                    : { opacity: 1, scale: 1, rotate: -3 }
+                }
+                transition={
+                  reduce
+                    ? { duration: 0.15, delay: 0.2 }
+                    : { type: "spring", stiffness: 500, damping: 26, delay: 0.8 }
+                }
+                className="mt-6 inline-block rounded-[3px] border-2 border-stamp px-3 py-1.5 font-mono text-[13px] tracking-[0.04em] text-stamp"
+              >
+                AVAILABLE
+              </motion.span>
+            </div>
+
+            {/* Data column */}
+            <div className="relative">
+              {/* Divider: vertical on md+, horizontal on mobile */}
+              <motion.span {...drawRule(0.2, true)} className="absolute inset-y-0 left-0 hidden w-[1.5px] origin-top bg-ink md:block" />
+              <motion.span {...drawRule(0.2)} className="absolute inset-x-0 top-0 h-[1.5px] origin-left bg-ink md:hidden" />
+
+              <dl className="grid grid-cols-2 md:grid-cols-1">
+                {titleBlockData.map(({ k, v }, i) => (
+                  <motion.div
+                    key={k}
+                    {...rise(0.3 + i * 0.06)}
+                    className="border-b border-rule px-6 py-4 last:border-b-0 md:px-6 md:py-5 [&:nth-last-child(2)]:max-md:border-b-0"
+                  >
+                    <dt className="data-label">{k}</dt>
+                    <dd className="mt-1 text-[14.5px] font-medium text-ink">{v}</dd>
+                  </motion.div>
+                ))}
+              </dl>
+            </div>
+          </div>
+        </div>
+
+        {/* ================= Standfirst + actions ================= */}
+        {/* Positioning copy: current shipped line retained pending user-approved
+            AI framing. Draft options live in the conversation — do not finalize here. */}
         <motion.p
-          variants={item}
-          className="text-blue-400 font-mono text-sm md:text-base mb-5 tracking-[0.25em] uppercase"
+          {...rise(0.5)}
+          className="mt-10 max-w-[54ch] text-[clamp(1.05rem,1rem+0.4vw,1.25rem)] leading-relaxed text-annotation"
         >
-          Frontend Developer
+          Frontend engineer building fast, considered web interfaces — turning
+          complex products into clean, reliable UI with React, Next.js and
+          TypeScript.
         </motion.p>
 
-        {/* Headline */}
-        <motion.h1
-          variants={item}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-[1.05]"
-        >
-          Hi, I&apos;m{" "}
-          <span className="gradient-text">Salman</span>
-          <br />
-          <span className="text-slate-400 text-3xl md:text-5xl lg:text-6xl font-light mt-2 inline-block">
-            Sanusi
-          </span>
-        </motion.h1>
-
-        {/* Description */}
-        <motion.p
-          variants={item}
-          className="text-slate-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
-        >
-          I build clean, scalable web apps that deliver high performance and
-          seamless user experiences — turning complex ideas into bold, intuitive
-          interfaces.
-        </motion.p>
-
-        {/* CTAs */}
         <motion.div
-          variants={item}
-          className="flex flex-wrap justify-center gap-4 mb-12"
+          {...rise(0.6)}
+          className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4"
         >
-          <a
-            href="#projects"
-            className="group relative px-8 py-3.5 bg-blue-500 text-white rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_30px_rgba(59,130,246,0.5)]"
-          >
-            <span className="relative z-10">View Projects</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <a href="#projects" className="doc-link doc-link--red text-[15px] font-medium">
+            Read the case studies
           </a>
-
           <a
-            href="#contact"
-            className="px-8 py-3.5 border border-blue-500/40 text-blue-400 rounded-xl font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:border-blue-400 hover:bg-blue-500/10 hover:shadow-[0_0_25px_rgba(59,130,246,0.15)]"
-          >
-            Contact Me
-          </a>
-
-          <a
-            href="https://drive.google.com/file/d/1Sgsp-4_BvTLWR4TjYlLHYOhWE6FYUaiI/view?usp=drive_link"
+            href={RESUME_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-8 py-3.5 border border-white/10 text-slate-300 rounded-xl font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/5"
+            className="doc-link text-[15px] font-medium"
           >
-            Resume
+            Résumé
           </a>
-        </motion.div>
-
-        {/* Social icons */}
-        <motion.div variants={item} className="flex justify-center gap-4">
-          {socials.map(({ icon, href, label }) => (
-            <motion.a
-              key={label}
-              href={href}
-              aria-label={label}
-              target={href.startsWith("http") ? "_blank" : undefined}
-              rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-              whileHover={{ y: -3, scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 20 }}
-              className="p-3 rounded-full border border-white/10 text-slate-400 hover:text-white hover:border-blue-500/50 hover:bg-blue-500/10 transition-colors"
+          <span className="flex items-center gap-6 font-mono text-[12.5px]">
+            <a
+              href="https://github.com/Dharkwhale"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="doc-link"
             >
-              {icon}
-            </motion.a>
-          ))}
+              github
+            </a>
+            <a
+              href="https://linkedin.com/in/salman-sanusi"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="doc-link"
+            >
+              linkedin
+            </a>
+          </span>
         </motion.div>
-      </motion.div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-600"
-      >
-        <span className="text-[10px] font-mono tracking-[0.3em] uppercase">scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          className="w-px h-8 bg-gradient-to-b from-slate-600 to-transparent"
-        />
-      </motion.div>
+      </div>
     </section>
   );
 };

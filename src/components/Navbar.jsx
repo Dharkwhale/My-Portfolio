@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { RxHamburgerMenu } from "react-icons/rx";
-import { IoMdClose } from "react-icons/io";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { EASE_CRISP } from "../lib/motion";
 
 const NAV_LINKS = ["home", "about", "projects", "contact"];
 
+// Document running-header: mono wordmark left, plain links right,
+// red marker under the active section. Solid paper + ink rule once scrolled.
 export const Navbar = ({ menuOpen, setMenuOpen }) => {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState("home");
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     const onScroll = () => {
@@ -16,7 +18,7 @@ export const Navbar = ({ menuOpen, setMenuOpen }) => {
       const idx = sections.findIndex((el) => {
         if (!el) return false;
         const { top, bottom } = el.getBoundingClientRect();
-        return top <= 100 && bottom >= 100;
+        return top <= 120 && bottom >= 120;
       });
       if (idx !== -1) setActive(NAV_LINKS[idx]);
     };
@@ -27,59 +29,62 @@ export const Navbar = ({ menuOpen, setMenuOpen }) => {
   useEffect(() => {
     document.body.style.overflow =
       menuOpen && window.innerWidth < 768 ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   return (
     <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`fixed top-0 z-40 w-full transition-all duration-300 ${
-        scrolled
-          ? "bg-[#0a0a0a]/85 backdrop-blur-xl border-b border-white/5 shadow-xl"
-          : "bg-transparent"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4, ease: EASE_CRISP }}
+      style={{ zIndex: "var(--z-nav)" }}
+      className={`fixed top-0 w-full bg-paper transition-shadow duration-300 ${
+        scrolled ? "shadow-[0_1.5px_0_0_var(--color-ink)]" : ""
       }`}
     >
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <a href="#home" className="font-mono font-bold text-xl">
-            <span className="text-white">Salman</span>
-            <span className="gradient-text">.dev</span>
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="flex h-16 items-center justify-between">
+          {/* Wordmark — a document's running header */}
+          <a href="#home" className="font-mono text-[13px] text-ink">
+            salman sanusi
           </a>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden items-center gap-8 md:flex">
             {NAV_LINKS.map((link) => (
               <a
                 key={link}
                 href={`#${link}`}
-                className={`relative px-4 py-2 text-sm font-medium capitalize rounded-full transition-colors duration-200 ${
-                  active === link
-                    ? "text-white"
-                    : "text-slate-400 hover:text-white"
+                className={`relative py-1 text-[14px] font-medium capitalize transition-colors duration-200 ${
+                  active === link ? "text-ink" : "text-annotation hover:text-ink"
                 }`}
               >
+                {link}
                 {active === link && (
                   <motion.span
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-white/10 rounded-full"
-                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                    layoutId="nav-marker"
+                    className="absolute -bottom-0.5 left-0 h-[2px] w-full bg-stamp"
+                    transition={
+                      reduce
+                        ? { duration: 0 }
+                        : { type: "spring", stiffness: 480, damping: 36 }
+                    }
                   />
                 )}
-                <span className="relative z-10">{link}</span>
               </a>
             ))}
           </div>
 
-          {/* Mobile button */}
+          {/* Mobile button — mono text, no icon */}
           <button
-            className="md:hidden text-2xl text-white z-50 p-2"
+            className="z-10 p-2 font-mono text-[13px] text-ink md:hidden"
             onClick={() => setMenuOpen((p) => !p)}
-            aria-label="Toggle menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
           >
-            {menuOpen ? <IoMdClose /> : <RxHamburgerMenu />}
+            {menuOpen ? "[close]" : "[menu]"}
           </button>
         </div>
       </div>
@@ -88,21 +93,22 @@ export const Navbar = ({ menuOpen, setMenuOpen }) => {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.22 }}
-            className="md:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-[#0a0a0a]/97 backdrop-blur-xl flex flex-col items-center justify-center gap-10 text-2xl z-30"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, ease: EASE_CRISP }}
+            style={{ zIndex: "var(--z-overlay)" }}
+            className="fixed left-0 top-16 flex h-[calc(100dvh-4rem)] w-full flex-col items-start justify-center gap-3 bg-paper px-10 md:hidden"
           >
             {NAV_LINKS.map((link, i) => (
               <motion.a
                 key={link}
                 href={`#${link}`}
                 onClick={() => setMenuOpen(false)}
-                initial={{ opacity: 0, x: -24 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.07 }}
-                className="capitalize text-slate-300 hover:text-white font-medium transition-colors"
+                initial={{ opacity: 0, y: reduce ? 0 : 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.03 * i, duration: 0.3, ease: EASE_CRISP }}
+                className="font-display border-b border-rule pb-3 text-5xl font-bold capitalize text-ink transition-colors hover:text-stamp"
               >
                 {link}
               </motion.a>

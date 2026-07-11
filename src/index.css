@@ -1,51 +1,145 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+
+/* ============================================================
+   FIELD NOTES — design tokens
+   The portfolio as a working engineering document.
+   Paper · ink · one stamp-red accent. No cards, no atmosphere.
+   Full conventions: docs/ai-memory/frontend-conventions.md
+   ============================================================ */
+@theme {
+  /* Surfaces */
+  --color-paper: #fafaf6;
+  --color-field: #f0f0e8;
+
+  /* Ink ramp (annotation verified ≥4.5:1 on paper) */
+  --color-ink: #171713;
+  --color-annotation: #62625a;
+
+  /* Hairline row rule (structural borders use ink at 1.5px) */
+  --color-rule: rgba(23, 23, 19, 0.18);
+
+  /* Single accent — stamps, links, one primary action per view */
+  --color-stamp: #c8102e;
+
+  --font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Fragment Mono", ui-monospace, monospace;
+}
+
+:root {
+  /* Motion — only transform + opacity ever animate. Nothing loops. */
+  --dur-fast: 180ms;
+  --dur-base: 300ms;
+  --dur-entrance: 450ms;
+  --ease-crisp: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Semantic z-scale */
+  --z-base: 0;
+  --z-nav: 40;
+  --z-overlay: 45;
+}
 
 html {
   scroll-behavior: smooth;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
-  font-family: "Space Grotesk", sans-serif;
-  background: #0a0a0a;
-  color: #f1f5f9;
+  font-family: var(--font-sans);
+  background: var(--color-paper);
+  color: var(--color-ink);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #0a0a0a; }
-::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: #60a5fa; }
-
-/* Gradient text utility */
-.gradient-text {
-  background: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* Display type: tight, confident. Applied to headings/name. */
+.font-display {
+  font-family: var(--font-sans);
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
-/* Floating orb animations */
-@keyframes float-orb {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33%       { transform: translate(30px, -40px) scale(1.06); }
-  66%       { transform: translate(-20px, 20px) scale(0.94); }
-}
-@keyframes float-orb-2 {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33%       { transform: translate(-40px, 25px) scale(0.95); }
-  66%       { transform: translate(30px, -35px) scale(1.05); }
+p {
+  text-wrap: pretty;
 }
 
-.orb-1 { animation: float-orb    14s ease-in-out infinite; }
-.orb-2 { animation: float-orb-2  18s ease-in-out infinite; }
-.orb-3 { animation: float-orb    22s ease-in-out infinite reverse; }
-
-/* Loading bar */
-@keyframes loading-sweep {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(300%); }
+::selection {
+  background: var(--color-stamp);
+  color: var(--color-paper);
 }
-.animate-loading-bar { animation: loading-sweep 1.2s ease infinite; }
+
+/* Focus visibility — stamp-red ring, never removed */
+:focus-visible {
+  outline: 2px solid var(--color-stamp);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: #d6d6ca;
+  border: 2px solid var(--color-paper);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-annotation);
+}
+
+/* Structural rule — 1.5px ink, used above section headings */
+.rule-ink {
+  height: 1.5px;
+  background: var(--color-ink);
+}
+
+/* Hairline — 1px, table rows and quiet dividers */
+.rule-hair {
+  height: 1px;
+  background: var(--color-rule);
+}
+
+/* Mono data label: lowercase, small, annotation. NEVER tracked caps. */
+.data-label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--color-annotation);
+}
+
+/* Marked placeholder for user-written narrative — honest, visible, temporary */
+.placeholder-copy {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-annotation);
+}
+
+/* Document link: underlined ink → stamp red. The only hover language. */
+.doc-link {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--dur-fast) var(--ease-crisp),
+    text-decoration-color var(--dur-fast) var(--ease-crisp);
+}
+.doc-link:hover {
+  color: var(--color-stamp);
+  text-decoration-color: var(--color-stamp);
+}
+.doc-link--red {
+  color: var(--color-stamp);
+}
+.doc-link--red:hover {
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

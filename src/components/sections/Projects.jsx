@@ -1,113 +1,144 @@
-import { motion } from "framer-motion";
-import { FiExternalLink } from "react-icons/fi";
-import { RevealOnScroll } from "../RevealOnScroll";
+import { RevealOnScroll, RuleReveal } from "../RevealOnScroll";
 import projectrip from "../../assets/projectrip.PNG";
 import projectark from "../../assets/projectark.PNG";
 import projectportt from "../../assets/projectportt.PNG";
 import projectasap from "../../assets/projectasap.PNG";
 
-const projects = [
+// Each project is an issued document: header → figure → abstract → story.
+// The story slots (problem / approach / the hard decision / impact) are
+// PLACEHOLDERS — the user writes the real narrative. Never invent it.
+const STORY_SLOTS = [
+  { label: "problem", hint: "[What was broken or missing, and why it mattered]" },
+  { label: "approach", hint: "[How you attacked it — the shape of the solution]" },
+  { label: "the hard decision", hint: "[The trade-off you had to call, and why]" },
+  { label: "impact", hint: "[What changed — numbers if real, honest outcome if not]" },
+];
+
+const documents = [
   {
     title: "Delivery Platform",
-    desc: "A delivery platform connecting customers with local stores, offering seamless online ordering, real-time tracking, and efficient delivery management.",
+    abstract:
+      "A delivery platform connecting customers with local stores — seamless online ordering, real-time tracking, and efficient delivery management.",
     image: projectasap,
-    tags: ["React", "Next.js", "Zustand", "TailwindCSS", "JavaScript"],
+    stack: "react · next.js · zustand · tailwindcss",
     link: "https://asap-you.vercel.app/",
+    featured: true,
   },
   {
     title: "Trip Itinerary Planner",
-    desc: "A responsive itinerary planner for scheduling trips, managing budgets, booking hotels and flights, and exploring destinations with timeline views.",
+    abstract:
+      "Plan trips, manage budgets, book hotels and flights, and explore destinations with timeline views.",
     image: projectrip,
-    tags: ["React", "TailwindCSS", "JavaScript"],
+    stack: "react · tailwindcss · javascript",
     link: "https://new-travel-app.netlify.app/",
   },
   {
     title: "Crypto Token Analyzer",
-    desc: "A comprehensive tool for analyzing cryptocurrency tokens, providing real-time data visualization and market insights for informed investment decisions.",
+    abstract:
+      "Analyze crypto tokens with real-time data visualization and market insights for informed decisions.",
     image: projectark,
-    tags: ["React", "TailwindCSS", "JavaScript"],
+    stack: "react · tailwindcss · javascript",
     link: "https://ark-nine.vercel.app/",
   },
   {
     title: "Portfolio Website",
-    desc: "A fully functional portfolio website using React and TailwindCSS, showcasing projects, skills, and experience with a modern, responsive design.",
+    abstract:
+      "A modern, responsive portfolio in React and TailwindCSS showcasing projects, skills and experience.",
     image: projectportt,
-    tags: ["React", "TailwindCSS", "JavaScript"],
+    stack: "react · tailwindcss · javascript",
     link: "https://chris-portfolio-demo.netlify.app/",
   },
 ];
 
-export const Projects = () => {
-  return (
-    <section id="projects" className="min-h-screen flex items-center justify-center py-28">
-      <div className="max-w-6xl mx-auto px-6 w-full">
+const Document = ({ doc, flip }) => (
+  <article className="border-b border-rule py-12 last:border-b-0 md:py-16">
+    {/* Document header */}
+    <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+      <div className="flex items-baseline gap-4">
+        <h3 className="font-display text-[clamp(1.4rem,2.6vw,1.9rem)] font-bold tracking-[-0.02em] text-ink">
+          {doc.title}
+        </h3>
+        {doc.featured && (
+          <span className="font-mono text-[11px] text-stamp">featured</span>
+        )}
+      </div>
+      <a
+        href={doc.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="doc-link doc-link--red font-mono text-[12.5px]"
+      >
+        view the build
+      </a>
+    </div>
 
-        {/* Heading */}
-        <RevealOnScroll>
-          <div className="text-center mb-20">
-            <p className="text-blue-400 font-mono text-sm tracking-[0.25em] uppercase mb-3">
-              What I&apos;ve built
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold gradient-text">Featured Projects</h2>
+    <div className="mt-7 grid gap-8 md:grid-cols-12 md:gap-10">
+      {/* Figure */}
+      <div className={`md:col-span-6 ${flip ? "md:order-2" : ""}`}>
+        <figure>
+          <div className="border-[1.5px] border-ink">
+            <img
+              src={doc.image}
+              alt={`${doc.title} — screenshot`}
+              loading="lazy"
+              className="aspect-[16/10] w-full object-cover object-top"
+            />
           </div>
-        </RevealOnScroll>
+          <figcaption className="mt-2.5 flex items-baseline justify-between gap-4">
+            <span className="font-mono text-[11.5px] text-annotation">
+              {doc.stack}
+            </span>
+          </figcaption>
+        </figure>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, i) => (
-            <RevealOnScroll key={i} delay={i * 0.1}>
-              <motion.div
-                whileHover={{ y: -7 }}
-                transition={{ type: "spring", stiffness: 280, damping: 22 }}
-                className="group flex flex-col rounded-2xl bg-white/[0.03] border border-white/10 overflow-hidden hover:border-blue-500/30 hover:shadow-[0_10px_40px_rgba(59,130,246,0.1)] transition-all duration-300"
-              >
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d0d0d]/90 via-[#0d0d0d]/20 to-transparent" />
-                  <span className="absolute top-3 right-3 font-mono text-xs text-slate-500 bg-black/60 backdrop-blur-sm px-2 py-1 rounded-lg">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                </div>
+      {/* Abstract + story */}
+      <div className={`md:col-span-6 ${flip ? "md:order-1" : ""}`}>
+        <p className="data-label">abstract</p>
+        <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-ink">
+          {doc.abstract}
+        </p>
 
-                {/* Body */}
-                <div className="p-6 flex flex-col flex-1">
-                  <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-5 flex-1">{project.desc}</p>
-
-                  <div className="flex flex-wrap gap-2 mb-5">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-blue-400 transition-colors font-medium group/link"
-                  >
-                    View Project
-                    <FiExternalLink
-                      size={13}
-                      className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
-                    />
-                  </a>
-                </div>
-              </motion.div>
-            </RevealOnScroll>
+        <div className="mt-7 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+          {STORY_SLOTS.map(({ label, hint }) => (
+            <div key={label}>
+              <p className="data-label">{label}</p>
+              <p className="placeholder-copy mt-1.5">{hint}</p>
+            </div>
           ))}
         </div>
-
       </div>
-    </section>
-  );
-};
+    </div>
+  </article>
+);
+
+export const Projects = () => (
+  <section id="projects" className="relative scroll-mt-16 px-6 py-24 md:py-32">
+    <div className="mx-auto w-full max-w-6xl">
+      <RevealOnScroll>
+        <RuleReveal />
+        <div className="mt-4 flex flex-wrap items-baseline justify-between gap-4">
+          <h2 className="font-display text-[clamp(1.9rem,4vw,2.6rem)] font-bold tracking-[-0.02em] text-ink">
+            Selected work
+          </h2>
+          <span className="font-mono text-[12px] text-annotation">
+            {documents.length} documents · narratives in progress
+          </span>
+        </div>
+        <p className="mt-4 max-w-[58ch] text-[15px] leading-relaxed text-annotation">
+          Each project is written up as a working document — the problem, the
+          approach, the one hard decision, the impact. The stories are being
+          written; the builds are live now.
+        </p>
+      </RevealOnScroll>
+
+      <div className="mt-6">
+        {documents.map((doc, i) => (
+          <RevealOnScroll key={doc.title} delay={0.05}>
+            <Document doc={doc} flip={i % 2 === 1} />
+          </RevealOnScroll>
+        ))}
+      </div>
+    </div>
+  </section>
+);

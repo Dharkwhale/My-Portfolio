@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design directions — Salman Sanusi portfolio revamp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Archivo:ital,wdth,wght@0,62..125,100..900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #202020; font-family: system-ui, sans-serif; }
+  .board { min-height: 100vh; padding: clamp(2rem, 5vw, 5rem); }
+  .board-tag {
+    font: 500 11px/1 system-ui, sans-serif; letter-spacing: 0.08em;
+    color: #888; text-transform: uppercase; margin-bottom: 2rem;
+  }
+  .swatches { display: flex; gap: 0; margin: 2.5rem 0; }
+  .swatch { flex: 1; height: 72px; position: relative; }
+  .swatch span {
+    position: absolute; bottom: 6px; left: 8px;
+    font: 400 10px/1.4 "IBM Plex Mono", monospace;
+  }
+  .kills { margin-top: 3rem; font-size: 13px; line-height: 1.7; max-width: 62ch; }
+
+  /* ============ A · GALLEY — the typeset journal ============ */
+  .a { background: #F5F1E8; color: #1C1814; }
+  .a .board-tag { color: #8A8071; }
+  .a .masthead {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "SOFT" 0, "WONK" 1;
+    font-weight: 480; font-style: italic;
+    font-size: clamp(4rem, 11vw, 8.5rem);
+    line-height: 0.92; letter-spacing: -0.02em;
+  }
+  .a .standfirst {
+    font-family: "Newsreader", serif;
+    font-size: clamp(1.15rem, 1rem + 0.6vw, 1.4rem);
+    line-height: 1.55; max-width: 44ch; margin-top: 2rem;
+    font-variation-settings: "opsz" 16;
+  }
+  .a .standfirst em { font-style: italic; color: #1F3AC3; }
+  .a .rule { height: 1px; background: rgba(28,24,20,0.25); margin: 2.5rem 0 0.5rem; }
+  .a .rule.heavy { height: 3px; background: #1C1814; }
+  .a .h2 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 60;
+    font-weight: 560; font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    line-height: 1.05; letter-spacing: -0.015em; margin-top: 0.75rem;
+  }
+  .a .body {
+    font-family: "Newsreader", serif; font-size: 1.075rem; line-height: 1.68;
+    max-width: 60ch; margin-top: 1.25rem; color: #2B2620;
+    font-variation-settings: "opsz" 14;
+  }
+  .a .grid { display: grid; grid-template-columns: 1fr 260px; gap: 4rem; margin-top: 3rem; align-items: start; }
+  .a .margin-note {
+    border-top: 3px solid #1C1814; padding-top: 0.9rem;
+  }
+  .a .margin-note .mn-title {
+    font-family: "Newsreader", serif; font-style: italic; font-size: 0.95rem; color: #6B6154;
+    margin-bottom: 0.9rem;
+  }
+  .a dl { font-family: "IBM Plex Mono", monospace; font-size: 12.5px; }
+  .a dl div { display: flex; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid rgba(28,24,20,0.14); }
+  .a dt { color: #6B6154; } .a dd { color: #1C1814; }
+  .a .accent-link {
+    font-family: "Newsreader", serif; font-size: 1.05rem; color: #1F3AC3;
+    text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px;
+  }
+  .a .kills { color: #6B6154; font-family: "Newsreader", serif; font-size: 14px; }
+
+  /* ============ B · MACHINE ROOM — cold Swiss-industrial ============ */
+  .b { background: #0F1113; color: #E8EBEE; }
+  .b .board-tag { color: #5C656D; }
+  .b .masthead {
+    font-family: "Archivo", sans-serif;
+    font-variation-settings: "wdth" 125;
+    font-weight: 800; text-transform: uppercase;
+    font-size: clamp(3.2rem, 9.5vw, 7.5rem);
+    line-height: 0.88; letter-spacing: -0.01em;
+  }
+  .b .masthead .slash { color: #FF4A1A; font-weight: 300; font-variation-settings: "wdth" 62; }
+  .b .standfirst {
+    font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 100;
+    font-weight: 400; font-size: clamp(1rem, 0.95rem + 0.4vw, 1.2rem);
+    line-height: 1.6; color: #98A1A9; max-width: 52ch; margin-top: 2rem;
+  }
+  .b .standfirst strong { color: #E8EBEE; font-weight: 600; }
+  .b .h2 {
+    font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 115;
+    font-weight: 700; font-size: clamp(1.7rem, 3.2vw, 2.5rem); line-height: 1;
+    letter-spacing: -0.01em; margin-top: 0.9rem;
+  }
+  .b .panel-grid { display: grid; grid-template-columns: 1fr 300px; gap: 0; margin-top: 3rem; border: 1px solid rgba(233,236,239,0.16); }
+  .b .panel { padding: 1.6rem; border-right: 1px solid rgba(233,236,239,0.16); }
+  .b .panel:last-child { border-right: 0; }
+  .b .body { font-family: "Archivo", sans-serif; font-size: 0.98rem; line-height: 1.65; color: #B7BEC5; max-width: 58ch; }
+  .b .plate { }
+  .b .plate-label {
+    font-family: "Archivo", sans-serif; font-variation-settings: "wdth" 120;
+    font-weight: 600; font-size: 10.5px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: #5C656D;
+  }
+  .b dl { margin-top: 0.4rem; }
+  .b dl div { display: flex; justify-content: space-between; align-items: baseline; padding: 9px 0; border-bottom: 1px solid rgba(233,236,239,0.12); }
+  .b dl div:last-child { border-bottom: 0; }
+  .b dt { font-family: "Spline Sans Mono", "Fragment Mono", monospace; font-size: 11.5px; color: #5C656D; }
+  .b dd { font-family: "Archivo", sans-serif; font-size: 13.5px; color: #E8EBEE; }
+  .b dd.hot { color: #FF4A1A; }
+  .b .rulehead { display: flex; align-items: center; gap: 12px; margin-top: 3rem; }
+  .b .rulehead::after { content: ""; flex: 1; height: 1px; background: rgba(233,236,239,0.16); }
+  .b .kills { color: #98A1A9; font-family: "Archivo", sans-serif; }
+
+  /* ============ C · FIELD NOTES — the living spec sheet ============ */
+  .c { background: #FAFAF6; color: #171713; }
+  .c .board-tag { color: #8D8D82; }
+  .c .titleblock {
+    border: 1.5px solid #171713; margin-top: 1rem;
+  }
+  .c .tb-row { display: grid; grid-template-columns: 1fr 190px 150px; border-bottom: 1.5px solid #171713; }
+  .c .tb-row:last-child { border-bottom: 0; }
+  .c .tb-cell { padding: 12px 16px; border-right: 1.5px solid #171713; }
+  .c .tb-cell:last-child { border-right: 0; }
+  .c .tb-label { font-family: "Fragment Mono", monospace; font-size: 10px; color: #8D8D82; display: block; margin-bottom: 4px; }
+  .c .tb-value { font-family: "Schibsted Grotesk", sans-serif; font-weight: 500; font-size: 14.5px; }
+  .c .masthead {
+    font-family: "Schibsted Grotesk", sans-serif;
+    font-weight: 800; font-size: clamp(3.4rem, 10vw, 8rem);
+    line-height: 0.94; letter-spacing: -0.035em;
+    padding: 2rem 16px 1.6rem;
+  }
+  .c .stamp {
+    display: inline-block; margin-left: 1.5rem; vertical-align: middle;
+    border: 2px solid #C8102E; color: #C8102E; border-radius: 3px;
+    font-family: "Fragment Mono", monospace; font-size: 12px;
+    padding: 6px 12px; transform: rotate(-3deg); letter-spacing: 0.04em;
+  }
+  .c .standfirst {
+    font-family: "Schibsted Grotesk", sans-serif; font-weight: 400;
+    font-size: clamp(1.05rem, 1rem + 0.4vw, 1.25rem); line-height: 1.6;
+    color: #45453E; max-width: 54ch; margin-top: 2rem;
+  }
+  .c .h2 {
+    font-family: "Schibsted Grotesk", sans-serif; font-weight: 700;
+    font-size: clamp(1.7rem, 3.2vw, 2.4rem); letter-spacing: -0.02em;
+    margin-top: 3rem; padding-top: 1rem; border-top: 1.5px solid #171713;
+  }
+  .c .body { font-family: "Schibsted Grotesk", sans-serif; font-size: 1rem; line-height: 1.68; color: #45453E; max-width: 60ch; margin-top: 1rem; }
+  .c table { border-collapse: collapse; margin-top: 1.5rem; width: 100%; max-width: 640px; }
+  .c td, .c th { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid rgba(23,23,19,0.18); }
+  .c th { font-family: "Fragment Mono", monospace; font-size: 10.5px; font-weight: 400; color: #8D8D82; }
+  .c td { font-family: "Schibsted Grotesk", sans-serif; font-size: 14.5px; }
+  .c td.mono { font-family: "Fragment Mono", monospace; font-size: 12.5px; color: #45453E; }
+  .c .redlink { color: #C8102E; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+  .c .kills { color: #62625A; }
+</style>
+</head>
+<body>
+
+<!-- ================= A ================= -->
+<section class="board a">
+  <p class="board-tag">Direction A · “Galley” — the typeset journal</p>
+
+  <h1 class="masthead">Salman Sanusi</h1>
+  <p class="standfirst">Frontend engineer building <em>AI-powered products</em> — interfaces where the model is a feature, not a gimmick. <span style="font-family:'IBM Plex Mono',monospace;font-style:normal;font-size:0.8em;color:#6B6154">[copy placeholder — yours to write]</span></p>
+
+  <div class="swatches">
+    <div class="swatch" style="background:#F5F1E8"><span style="color:#1C1814">#F5F1E8 paper</span></div>
+    <div class="swatch" style="background:#EDE7D8"><span style="color:#1C1814">#EDE7D8 recessed</span></div>
+    <div class="swatch" style="background:#1C1814"><span style="color:#F5F1E8">#1C1814 ink</span></div>
+    <div class="swatch" style="background:#6B6154"><span style="color:#F5F1E8">#6B6154 subdued</span></div>
+    <div class="swatch" style="background:#1F3AC3"><span style="color:#F5F1E8">#1F3AC3 ultramarine</span></div>
+  </div>
+
+  <div class="grid">
+    <div>
+      <div class="rule heavy"></div>
+      <h2 class="h2">Case study, not card: each project runs as a feature story</h2>
+      <p class="body">Body copy is set in a text serif at a book-like measure. A case study reads like an essay — the problem, the approach, the one hard decision — with quiet mono data (dates, stacks, metrics) in the margins. Links are underlined in ultramarine, <a class="accent-link" href="#">like this one</a>. No cards, no pills: hierarchy comes from rules, size, and space.</p>
+    </div>
+    <aside class="margin-note">
+      <p class="mn-title">Colophon — evolved into a true printed-matter colophon</p>
+      <dl>
+        <div><dt>role</dt><dd>Frontend · AI</dd></div>
+        <div><dt>stack</dt><dd>React / Next / TS</dd></div>
+        <div><dt>based</dt><dd>Nigeria · remote</dd></div>
+        <div><dt>status</dt><dd style="color:#1F3AC3">available</dd></div>
+      </dl>
+    </aside>
+  </div>
+
+  <p class="kills"><strong>Kills:</strong> the dark-mode uniform entirely; tracked-caps mono labels (mono is lowercase, data-only); cards and pills; accent-period tic. <strong>Risk:</strong> “serif on cream” is a growing genre — differentiation must come from full print structure (margin notes, rules, tabular data), not surface styling. Most distinctive against a sea of dark AI portfolios.</p>
+</section>
+
+<!-- ================= B ================= -->
+<section class="board b">
+  <p class="board-tag">Direction B · “Machine Room” — cold Swiss-industrial</p>
+
+  <h1 class="masthead">Salman<br />Sanusi<span class="slash">/</span></h1>
+  <p class="standfirst"><strong>Frontend engineer with AI depth.</strong> Interfaces engineered like instruments — legible, fast, no decoration that doesn't work for a living. <span style="font-family:'Fragment Mono',monospace;font-size:0.85em;color:#5C656D">[copy placeholder]</span></p>
+
+  <div class="swatches">
+    <div class="swatch" style="background:#0F1113;border:1px solid #2A2E33"><span style="color:#E8EBEE">#0F1113 graphite</span></div>
+    <div class="swatch" style="background:#16191C"><span style="color:#E8EBEE">#16191C panel</span></div>
+    <div class="swatch" style="background:#E8EBEE"><span style="color:#0F1113">#E8EBEE steel-white</span></div>
+    <div class="swatch" style="background:#98A1A9"><span style="color:#0F1113">#98A1A9 gauge</span></div>
+    <div class="swatch" style="background:#FF4A1A"><span style="color:#0F1113">#FF4A1A vermilion</span></div>
+  </div>
+
+  <div class="rulehead"><h2 class="h2" style="margin-top:0">Panels, not cards — the grid is exposed</h2></div>
+
+  <div class="panel-grid">
+    <div class="panel">
+      <p class="body">Layout is a visible instrument panel: hard edges, zero border-radius, depth from line-weight instead of shadows or glows. Type is one variable family (Archivo) exercised across its width axis — compressed for data, expanded for headlines — so the site feels engineered from a single material. Case studies read as build logs: what was specified, what was decided, what shipped.</p>
+    </div>
+    <div class="panel plate">
+      <span class="plate-label">Nameplate</span>
+      <dl>
+        <div><dt>role</dt><dd>Frontend · AI</dd></div>
+        <div><dt>stack</dt><dd>React / Next / TS</dd></div>
+        <div><dt>loc</dt><dd>NGA · Remote</dd></div>
+        <div><dt>status</dt><dd class="hot">AVAILABLE</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <p class="kills"><strong>Kills:</strong> the warm amber-lounge feel (cold palette, hard edges); rounded-2xl surface sameness; floaty fades (motion becomes mechanical wipes/slides); glow of any kind. <strong>Risk:</strong> still a dark portfolio — the genre recruiters see most. Differentiation depends on discipline: width-axis type + exposed grid + vermilion used surgically.</p>
+</section>
+
+<!-- ================= C ================= -->
+<section class="board c">
+  <p class="board-tag">Direction C · “Field Notes” — the living spec sheet</p>
+
+  <div class="titleblock">
+    <div class="tb-row">
+      <div class="tb-cell" style="padding:0">
+        <h1 class="masthead">Salman Sanusi<span class="stamp">AVAILABLE</span></h1>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-label">discipline</span>
+        <span class="tb-value">Frontend · AI</span>
+        <span class="tb-label" style="margin-top:10px">stack</span>
+        <span class="tb-value">React / Next.js / TS</span>
+      </div>
+      <div class="tb-cell">
+        <span class="tb-label">location</span>
+        <span class="tb-value">Nigeria · Remote</span>
+        <span class="tb-label" style="margin-top:10px">revision</span>
+        <span class="tb-value">2026.07</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="standfirst">The portfolio as a working document: an engineering drawing's title block replaces the hero card, and every section follows document conventions — dated, tabular, exact. <span style="font-family:'Fragment Mono',monospace;font-size:0.85em;color:#8D8D82">[copy placeholder]</span></p>
+
+  <div class="swatches">
+    <div class="swatch" style="background:#FAFAF6;border:1px solid #ddd"><span style="color:#171713">#FAFAF6 bone</span></div>
+    <div class="swatch" style="background:#F0F0E8"><span style="color:#171713">#F0F0E8 field</span></div>
+    <div class="swatch" style="background:#171713"><span style="color:#FAFAF6">#171713 ink</span></div>
+    <div class="swatch" style="background:#62625A"><span style="color:#FAFAF6">#62625A annotation</span></div>
+    <div class="swatch" style="background:#C8102E"><span style="color:#FAFAF6">#C8102E stamp red</span></div>
+  </div>
+
+  <h2 class="h2">Experience as revision history, projects as issued documents</h2>
+  <p class="body">Everything data-shaped becomes an honest table — no pills, no cards. Red is reserved for stamps, links and the one thing that must be seen: <a href="#" class="redlink">view the build</a>. It reads utilitarian on the surface and meticulous the longer you look, which is exactly the impression a senior frontend engineer wants to leave.</p>
+
+  <table>
+    <tr><th>rev</th><th>period</th><th>entry</th></tr>
+    <tr><td class="mono">C</td><td class="mono">2024 — now</td><td>Frontend Developer, YOUFUNDIN</td></tr>
+    <tr><td class="mono">B</td><td class="mono">2022 — 2024</td><td>Frontend Developer, RENAGER</td></tr>
+    <tr><td class="mono">A</td><td class="mono">2012 — 2017</td><td>B.Tech Computer Engineering</td></tr>
+  </table>
+
+  <p class="kills"><strong>Kills:</strong> every soft/atmospheric tell at once (no grain, no vignette, no glow, no gradients, no cards); asserting copy — the whole format is proof-shaped; decorative motion (near-static, paper-flat). <strong>Risk:</strong> austere — needs its one expressive moment (the title-block hero) to land, or it reads dry. The stamp device must stay rare or it becomes its own tic.</p>
+</section>
+
+</body>
+</html>

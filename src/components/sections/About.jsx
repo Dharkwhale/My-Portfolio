@@ -1,110 +1,167 @@
-import { RevealOnScroll } from "../RevealOnScroll";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
+import { RevealOnScroll, RuleReveal } from "../RevealOnScroll";
+import { staggerParent, staggerRow } from "../../lib/motion";
 
-const skills = [
-  "JavaScript", "TypeScript", "React", "Next.js",
-  "TailwindCSS", "HTML / CSS", "Zustand", "REST APIs", "Git",
-];
-
-const experience = [
+// Experience as revision history — newest revision first.
+const revisions = [
   {
-    role: "Frontend Developer",
-    company: "YOUFUNDIN",
-    period: "2024 – Present",
-    desc: "Built and scaled components for a multi-featured web app, including dynamic dashboards and event listing interfaces.",
+    rev: "C",
+    period: "2024 — now",
+    entry: "Frontend Developer, YOUFUNDIN",
+    desc: "Built and scaled components for a multi-featured web app, including dynamic dashboards and event-listing interfaces.",
   },
   {
-    role: "Frontend Developer",
-    company: "RENAGER",
-    period: "2022 – 2024",
-    desc: "Worked closely with UI/UX designers to translate wireframes into responsive, pixel-perfect pages.",
+    rev: "B",
+    period: "2022 — 2024",
+    entry: "Frontend Developer, RENAGER",
+    desc: "Translated wireframes into responsive, pixel-perfect pages in close collaboration with UI/UX designers.",
+  },
+  {
+    rev: "A",
+    period: "2012 — 2017",
+    entry: "B.Tech Computer Engineering",
+    desc: "The Federal Polytechnic, Ilaro.",
+  },
+];
+
+// Capabilities replace the toolkit pill wall. Honest weighting per positioning:
+// frontend primary · AI solid · backend working knowledge. AI row content is a
+// placeholder — the user supplies the real substance; never invent it.
+const capabilities = [
+  {
+    area: "frontend",
+    detail: "React · Next.js · TypeScript · Tailwind · Zustand · Framer Motion",
+    weight: "primary",
+  },
+  {
+    area: "ai / llm",
+    detail: "[Placeholder — your actual AI work: integrations, LLM-powered features, what you've shipped. We write this together.]",
+    weight: "solid",
+    placeholder: true,
+  },
+  {
+    area: "backend",
+    detail: "REST API design & consumption",
+    weight: "working knowledge",
   },
 ];
 
 export const About = () => {
-  return (
-    <section id="about" className="min-h-screen flex items-center justify-center py-28">
-      <div className="max-w-6xl mx-auto px-6 w-full">
+  const reduce = useReducedMotion();
+  const row = staggerRow(reduce);
 
-        {/* Heading */}
+  return (
+    <section id="about" className="relative scroll-mt-16 px-6 py-24 md:py-32">
+      <div className="mx-auto w-full max-w-6xl">
         <RevealOnScroll>
-          <div className="text-center mb-20">
-            <p className="text-blue-400 font-mono text-sm tracking-[0.25em] uppercase mb-3">
-              Get to know me
-            </p>
-            <h2 className="text-4xl md:text-5xl font-bold gradient-text">About Me</h2>
-          </div>
+          <RuleReveal />
+          <h2 className="font-display mt-4 text-[clamp(1.9rem,4vw,2.6rem)] font-bold tracking-[-0.02em] text-ink">
+            Frontend, end to end
+          </h2>
+          {/* Prose below is the previously shipped copy — flagged for the
+              user's own rewrite; structure only changed here. */}
+          <p className="mt-5 max-w-[60ch] text-[clamp(1rem,0.95rem+0.3vw,1.125rem)] leading-relaxed text-annotation">
+            I&apos;m a frontend engineer who likes the unglamorous parts — state
+            that behaves, layouts that hold up, motion that earns its place. I
+            turn complex problems into interfaces that feel obvious to use.
+          </p>
         </RevealOnScroll>
 
-        <div className="grid md:grid-cols-2 gap-14 items-start">
-
-          {/* Left — bio + skills */}
-          <RevealOnScroll delay={0.1}>
+        <div className="mt-14 grid gap-12 md:grid-cols-12 md:gap-10 lg:gap-12">
+          {/* Method */}
+          <RevealOnScroll delay={0.05} className="md:col-span-5">
             <div>
-              <p className="text-slate-300 text-lg leading-relaxed mb-10">
-                I&apos;m a passionate frontend developer focused on building scalable,
-                high-performance web applications. I love turning complex problems
-                into clean, intuitive interfaces that users enjoy interacting with.
-              </p>
-
-              <h3 className="text-lg font-semibold text-white mb-5">Tech Stack</h3>
-              <div className="flex flex-wrap gap-3">
-                {skills.map((skill, i) => (
-                  <motion.span
-                    key={skill}
-                    initial={{ opacity: 0, scale: 0.85 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.055, duration: 0.3 }}
-                    whileHover={{ y: -3, scale: 1.05 }}
-                    className="px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-sm text-slate-300 hover:border-blue-500/40 hover:text-blue-400 hover:bg-blue-500/10 transition-colors cursor-default"
+              <h3 className="data-label">method</h3>
+              <ul className="mt-3">
+                {[
+                  "Ship readable, maintainable React — components that the next developer can pick up without a map.",
+                  "Treat performance and accessibility as features, not afterthoughts.",
+                  "Sweat the details users never consciously notice — the ones that make software feel right.",
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="border-b border-rule py-3.5 text-[15px] leading-relaxed text-ink last:border-b-0"
                   >
-                    {skill}
-                  </motion.span>
+                    {item}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </RevealOnScroll>
 
-          {/* Right — experience + education */}
-          <RevealOnScroll delay={0.2}>
-            <div className="space-y-10">
-
-              {/* Experience timeline */}
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-7">Experience</h3>
-                <div className="relative space-y-6 before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-px before:bg-white/10">
-                  {experience.map((job, i) => (
-                    <div key={i} className="pl-8 relative">
-                      <div className="absolute left-0 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-blue-500 bg-[#0a0a0a] shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
-                      <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-white/20 transition-colors">
-                        <div className="flex flex-wrap items-start justify-between gap-2 mb-1">
-                          <h4 className="font-semibold text-white">{job.role}</h4>
-                          <span className="text-xs font-mono text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded-md">
-                            {job.period}
-                          </span>
-                        </div>
-                        <p className="text-sm text-blue-400 font-medium mb-2">{job.company}</p>
-                        <p className="text-sm text-slate-400 leading-relaxed">{job.desc}</p>
-                      </div>
-                    </div>
+          {/* Experience — revision history */}
+          <RevealOnScroll delay={0.1} className="md:col-span-7">
+            <div>
+              <h3 className="data-label">revision history</h3>
+              <motion.table
+                variants={staggerParent}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-40px" }}
+                className="mt-3 w-full border-collapse"
+              >
+                <thead>
+                  <tr className="border-b border-rule text-left">
+                    <th className="data-label w-12 py-2.5 font-normal">rev</th>
+                    <th className="data-label w-32 py-2.5 font-normal max-sm:w-24">
+                      period
+                    </th>
+                    <th className="data-label py-2.5 font-normal">entry</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {revisions.map(({ rev, period, entry, desc }) => (
+                    <motion.tr
+                      key={rev}
+                      variants={row}
+                      className="group border-b border-rule align-top transition-colors duration-200 last:border-b-0 hover:bg-field"
+                    >
+                      <td className="py-4 pr-3 font-mono text-[12.5px] text-annotation">
+                        {rev}
+                      </td>
+                      <td className="py-4 pr-3 font-mono text-[12.5px] text-annotation">
+                        {period}
+                      </td>
+                      <td className="py-4">
+                        <p className="text-[15px] font-medium text-ink">{entry}</p>
+                        <p className="mt-1.5 max-w-[48ch] text-[14px] leading-relaxed text-annotation">
+                          {desc}
+                        </p>
+                      </td>
+                    </motion.tr>
                   ))}
-                </div>
-              </div>
-
-              {/* Education */}
-              <div>
-                <h3 className="text-lg font-semibold text-white mb-4">Education</h3>
-                <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10">
-                  <h4 className="font-semibold text-white">B.Tech, Computer Engineering</h4>
-                  <p className="text-sm text-blue-400 mt-1 font-medium">The Federal Polytechnic Ilaro</p>
-                  <p className="text-xs text-slate-500 mt-1.5 font-mono">2012 – 2017</p>
-                </div>
-              </div>
-
+                </tbody>
+              </motion.table>
             </div>
           </RevealOnScroll>
         </div>
+
+        {/* Capabilities — replaces the toolkit pill wall */}
+        <RevealOnScroll delay={0.05}>
+          <div className="mt-16">
+            <h3 className="data-label">capabilities</h3>
+            <div className="mt-3">
+              {capabilities.map(({ area, detail, weight, placeholder }) => (
+                <div
+                  key={area}
+                  className="grid grid-cols-[100px_1fr] items-baseline gap-4 border-b border-rule py-4 last:border-b-0 sm:grid-cols-[120px_1fr_160px]"
+                >
+                  <span className="font-mono text-[12.5px] text-ink">{area}</span>
+                  <span
+                    className={
+                      placeholder
+                        ? "placeholder-copy"
+                        : "text-[14.5px] text-ink"
+                    }
+                  >
+                    {detail}
+                  </span>
+                  <span className="data-label max-sm:col-start-2">{weight}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </RevealOnScroll>
       </div>
     </section>
   );
