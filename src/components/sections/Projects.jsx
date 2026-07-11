@@ -21,7 +21,7 @@ const documents = [
     abstract:
       "A delivery platform connecting customers with local stores — seamless online ordering, real-time tracking, and efficient delivery management.",
     image: projectasap,
-    stack: "react · next.js · zustand · tailwindcss",
+    stack: "react · next.js · tanstack query · tailwindcss",
     link: "https://asap-you.vercel.app/",
     featured: true,
     story: {
@@ -40,9 +40,12 @@ const documents = [
     meta: "Splunk Agentic Ops Hackathon 2026 · solo build",
     abstract:
       "An autonomous agent that hunts security logs for attacks before any alert fires — reasoning like an analyst instead of reacting to thresholds.",
-    image: null, // SOC dashboard screenshot pending from the user
+    // SOC dashboard screenshot: waiting for the user to drop the file into
+    // src/assets/sentinel.PNG — then import it here like the others.
+    image: null,
     stack: "python · fastapi · react · splunk sdk · claude opus 4.8",
-    link: null,
+    link: "https://github.com/Dharkwhale/sentinel-threat-hunter",
+    linkLabel: "view the source",
     story: {
       problem:
         "Static detection rules react to thresholds — a patient attack chain that never trips one walks straight past the SOC.",
@@ -126,7 +129,7 @@ const Document = ({ doc, flip }) => (
           rel="noopener noreferrer"
           className="doc-link doc-link--red font-mono text-[12.5px]"
         >
-          view the build
+          {doc.linkLabel ?? "view the build"}
         </a>
       )}
     </div>

@@ -43,6 +43,29 @@ four state transitions. Nothing loops. LoadingScreen deletion approved and execu
 - Contact: ruled channel table + document-field form (all four states kept), footer colophon.
 - CLAUDE.md styling/architecture sections updated to Field Notes.
 
-**Open items:** user to write hero positioning line (AI framing), AI-capability row,
-method rewrite, and per-project stories; `projectportt.PNG` shows a third-party demo
-identity — user will swap the asset later.
+**Copy approved (2026-07-11):** hero standfirst = "Frontend engineer with AI depth —
+strong interfaces first, working knowledge of everything the model needs behind them."
+Discipline cell = "Frontend Engineering" (conservative; standfirst carries the AI claim).
+Committed as 479756a; revamp itself is c4f7750.
+
+**Content phase (72ea4a1):** Delivery Platform story landed (user-authored, lightly
+edited: neighborhood-outlet gap → inside-out role-based build on TanStack Query/RHF/Zod →
+polling-over-WebSockets decision → 50+ user pilot). New Sentinel document added
+(Splunk Agentic Ops Hackathon 2026, solo: Claude Opus 4.8 agent reasoning loop, synthetic
+attack dataset, SSE-streamed React SOC dashboard, auto reports — uncovered a full attack
+chain in testing). ai/llm capabilities row real now (Claude API agents, SSE reasoning UIs,
+event-interest recommendation modeling).
+
+**User answers (2026-07-11):** DP stack corrected zustand → tanstack query. Sentinel repo
+linked (github.com/Dharkwhale/sentinel-threat-hunter, "view the source"; no demo link).
+Event-intelligence model stays OFF the projects list — it is company work under privacy
+policies; the capabilities row line is the only public trace. Do not add it as a document.
+
+**Open items:**
+- Sentinel figure: user has the SOC dashboard screenshot; needs to save it to
+  src/assets/sentinel.PNG, then wire the import in Projects.jsx (image swaps the document
+  from full-width to the split figure layout automatically).
+- Sentinel "hard decision" story slot still placeholder.
+- Stories pending: Trip Itinerary Planner, Crypto Token Analyzer, Portfolio Website.
+- Method bullets rewrite (About).
+- `projectportt.PNG` shows a third-party demo identity — user will swap the asset later.
