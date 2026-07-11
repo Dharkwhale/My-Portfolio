@@ -35,9 +35,9 @@ const capabilities = [
   },
   {
     area: "ai / llm",
-    detail: "[Placeholder — your actual AI work: integrations, LLM-powered features, what you've shipped. We write this together.]",
+    detail:
+      "Claude API agents — reasoning loops, SSE-streamed reasoning UIs, event-interest recommendation modeling",
     weight: "solid",
-    placeholder: true,
   },
   {
     area: "backend",

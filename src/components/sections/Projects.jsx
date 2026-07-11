@@ -5,13 +5,14 @@ import projectportt from "../../assets/projectportt.PNG";
 import projectasap from "../../assets/projectasap.PNG";
 
 // Each project is an issued document: header → figure → abstract → story.
-// The story slots (problem / approach / the hard decision / impact) are
-// PLACEHOLDERS — the user writes the real narrative. Never invent it.
+// Story slots (problem / approach / the hard decision / impact) hold the
+// user's own narrative where supplied; otherwise a marked placeholder.
+// Never invent the missing ones.
 const STORY_SLOTS = [
-  { label: "problem", hint: "[What was broken or missing, and why it mattered]" },
-  { label: "approach", hint: "[How you attacked it — the shape of the solution]" },
-  { label: "the hard decision", hint: "[The trade-off you had to call, and why]" },
-  { label: "impact", hint: "[What changed — numbers if real, honest outcome if not]" },
+  { key: "problem", label: "problem", hint: "[What was broken or missing, and why it mattered]" },
+  { key: "approach", label: "approach", hint: "[How you attacked it — the shape of the solution]" },
+  { key: "decision", label: "the hard decision", hint: "[The trade-off you had to call, and why]" },
+  { key: "impact", label: "impact", hint: "[What changed — numbers if real, honest outcome if not]" },
 ];
 
 const documents = [
@@ -23,6 +24,33 @@ const documents = [
     stack: "react · next.js · zustand · tailwindcss",
     link: "https://asap-you.vercel.app/",
     featured: true,
+    story: {
+      problem:
+        "Chowdeck, Heyfood and Glovo capture the major stores and restaurants — but the small neighborhood outlets people buy from daily stay offline. The goal: bring those outlets in and make ordering and delivery easy for the people around them.",
+      approach:
+        "Three distinct users — customer, vendor, rider — so I built from the inside out: shared UI primitives and the multi-step auth flows first, where the role-based logic lives. With ~80% of the app driven by server data, I built the data layer on TanStack Query and paired React Hook Form with Zod schemas for type-safety from input field to API endpoint.",
+      decision:
+        "Short-polling over WebSockets for live rider tracking. Sockets stream instantly but demand a stateful server, mobile drop-handling and early scaling work. TanStack Query's refetchInterval polls coordinates every 5 seconds over plain HTTP while Framer Motion smooths the map marker between updates — a live feel at a fraction of the overhead.",
+      impact:
+        "Shipped the MVP to a pilot group of 50+ test users and riders; the platform processed its first live end-to-end delivery orders. Query caching cut redundant requests and kept the tracking map smooth on standard mobile networks.",
+    },
+  },
+  {
+    title: "Sentinel — AI Threat Hunting Agent",
+    meta: "Splunk Agentic Ops Hackathon 2026 · solo build",
+    abstract:
+      "An autonomous agent that hunts security logs for attacks before any alert fires — reasoning like an analyst instead of reacting to thresholds.",
+    image: null, // SOC dashboard screenshot pending from the user
+    stack: "python · fastapi · react · splunk sdk · claude opus 4.8",
+    link: null,
+    story: {
+      problem:
+        "Static detection rules react to thresholds — a patient attack chain that never trips one walks straight past the SOC.",
+      approach:
+        "An agent reasoning loop on Claude Opus 4.8 that works like an analyst: forms hypotheses, writes its own Splunk queries, weighs the evidence, and revises its confidence before escalating or dismissing. Around it: a synthetic attack dataset, a React SOC dashboard streaming the agent's reasoning live over SSE, and an automated report generator. Built entirely solo.",
+      impact:
+        "In testing, it uncovered a full attack chain — credential stuffing, brute force, lateral movement, and database compromise — that static rules miss.",
+    },
   },
   {
     title: "Trip Itinerary Planner",
@@ -50,69 +78,114 @@ const documents = [
   },
 ];
 
+const StorySlots = ({ doc, wide }) => (
+  <div
+    className={`mt-7 grid gap-x-8 gap-y-5 sm:grid-cols-2 ${
+      wide ? "lg:grid-cols-4" : ""
+    }`}
+  >
+    {STORY_SLOTS.map(({ key, label, hint }) => {
+      const text = doc.story?.[key];
+      return (
+        <div key={key}>
+          <p className="data-label">{label}</p>
+          <p
+            className={
+              text
+                ? "mt-1.5 text-[14px] leading-relaxed text-ink"
+                : "placeholder-copy mt-1.5"
+            }
+          >
+            {text ?? hint}
+          </p>
+        </div>
+      );
+    })}
+  </div>
+);
+
 const Document = ({ doc, flip }) => (
   <article className="border-b border-rule py-12 last:border-b-0 md:py-16">
     {/* Document header */}
     <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-      <div className="flex items-baseline gap-4">
+      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <h3 className="font-display text-[clamp(1.4rem,2.6vw,1.9rem)] font-bold tracking-[-0.02em] text-ink">
           {doc.title}
         </h3>
         {doc.featured && (
           <span className="font-mono text-[11px] text-stamp">featured</span>
         )}
+        {doc.meta && (
+          <span className="font-mono text-[11px] text-annotation">{doc.meta}</span>
+        )}
       </div>
-      <a
-        href={doc.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="doc-link doc-link--red font-mono text-[12.5px]"
-      >
-        view the build
-      </a>
+      {doc.link && (
+        <a
+          href={doc.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="doc-link doc-link--red font-mono text-[12.5px]"
+        >
+          view the build
+        </a>
+      )}
     </div>
 
-    <div className="mt-7 grid gap-8 md:grid-cols-12 md:gap-10">
-      {/* Figure */}
-      <div className={`md:col-span-6 ${flip ? "md:order-2" : ""}`}>
-        <figure>
-          <div className="border-[1.5px] border-ink">
-            <img
-              src={doc.image}
-              alt={`${doc.title} — screenshot`}
-              loading="lazy"
-              className="aspect-[16/10] w-full object-cover object-top"
-            />
-          </div>
-          <figcaption className="mt-2.5 flex items-baseline justify-between gap-4">
-            <span className="font-mono text-[11.5px] text-annotation">
-              {doc.stack}
-            </span>
-          </figcaption>
-        </figure>
-      </div>
-
-      {/* Abstract + story */}
-      <div className={`md:col-span-6 ${flip ? "md:order-1" : ""}`}>
-        <p className="data-label">abstract</p>
-        <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-ink">
-          {doc.abstract}
-        </p>
-
-        <div className="mt-7 grid gap-x-8 gap-y-5 sm:grid-cols-2">
-          {STORY_SLOTS.map(({ label, hint }) => (
-            <div key={label}>
-              <p className="data-label">{label}</p>
-              <p className="placeholder-copy mt-1.5">{hint}</p>
+    {doc.image ? (
+      <div className="mt-7 grid gap-8 md:grid-cols-12 md:gap-10">
+        {/* Figure */}
+        <div className={`md:col-span-6 ${flip ? "md:order-2" : ""}`}>
+          <figure>
+            <div className="border-[1.5px] border-ink">
+              <img
+                src={doc.image}
+                alt={`${doc.title} — screenshot`}
+                loading="lazy"
+                className="aspect-[16/10] w-full object-cover object-top"
+              />
             </div>
-          ))}
+            <figcaption className="mt-2.5 flex items-baseline justify-between gap-4">
+              <span className="font-mono text-[11.5px] text-annotation">
+                {doc.stack}
+              </span>
+            </figcaption>
+          </figure>
+        </div>
+
+        {/* Abstract + story */}
+        <div className={`md:col-span-6 ${flip ? "md:order-1" : ""}`}>
+          <p className="data-label">abstract</p>
+          <p className="mt-2 max-w-[52ch] text-[15px] leading-relaxed text-ink">
+            {doc.abstract}
+          </p>
+          <StorySlots doc={doc} />
         </div>
       </div>
-    </div>
+    ) : (
+      /* No figure yet — the document runs full-width, story slots 4-up */
+      <div className="mt-7">
+        <p className="data-label">abstract</p>
+        <p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-ink">
+          {doc.abstract}
+        </p>
+        <StorySlots doc={doc} wide />
+        <p className="mt-6 font-mono text-[11.5px] text-annotation">
+          {doc.stack}
+        </p>
+      </div>
+    )}
   </article>
 );
 
-export const Projects = () => (
+export const Projects = () => {
+  // Alternate figure sides among documents that have figures
+  let figureCount = 0;
+  const docsWithFlip = documents.map((doc) => ({
+    doc,
+    flip: doc.image ? figureCount++ % 2 === 1 : false,
+  }));
+
+  return (
   <section id="projects" className="relative scroll-mt-16 px-6 py-24 md:py-32">
     <div className="mx-auto w-full max-w-6xl">
       <RevealOnScroll>
@@ -133,12 +206,13 @@ export const Projects = () => (
       </RevealOnScroll>
 
       <div className="mt-6">
-        {documents.map((doc, i) => (
+        {docsWithFlip.map(({ doc, flip }) => (
           <RevealOnScroll key={doc.title} delay={0.05}>
-            <Document doc={doc} flip={i % 2 === 1} />
+            <Document doc={doc} flip={flip} />
           </RevealOnScroll>
         ))}
       </div>
     </div>
   </section>
-);
+  );
+};
