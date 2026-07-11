@@ -51,6 +51,8 @@ const documents = [
         "Static detection rules react to thresholds — a patient attack chain that never trips one walks straight past the SOC.",
       approach:
         "An agent reasoning loop on Claude Opus 4.8 that works like an analyst: forms hypotheses, writes its own Splunk queries, weighs the evidence, and revises its confidence before escalating or dismissing. Around it: a synthetic attack dataset, a React SOC dashboard streaming the agent's reasoning live over SSE, and an automated report generator. Built entirely solo.",
+      decision:
+        "Making the agent genuinely reason rather than just summarize. Early versions accepted weak evidence and confirmed everything. I restructured the prompt to force a real confirm-or-deny judgment on each query, which produced authentic confidence revision in both directions — the difference between an actual agent and a glorified search.",
       impact:
         "In testing, it uncovered a full attack chain — credential stuffing, brute force, lateral movement, and database compromise — that static rules miss.",
     },
