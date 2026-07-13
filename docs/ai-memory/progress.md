@@ -1,5 +1,23 @@
 # Progress log
 
+## 2026-07-12 — Design iteration to "Daylight" (locked), content polish
+
+The committed Field Notes light v1 read washed-out to the user live; a dark "Night"
+variant was built and also rejected ("something I'm not feeling"). Diagnosis via
+targeted questions + two reference sites the user shared: his taste is **warm,
+textured, playful** — premium depth, visible motion, decorative personality. Final
+direction **Field Notes · Daylight**: toned paper #f1ede3 + grain, panel shadows,
+rotating seal, tilted infinite marquee (the "nothing loops" rule was retired
+deliberately — two allowed loops, both pause/disable properly), 24px reveals,
+per-letter name entrance, cursor-spotlight experiment removed with the dark variant.
+Hero: revision cell cut; standfirst+actions moved inside the frame. Footer set to
+user's exact copy. All mid-text em dashes removed from visible copy (user rule).
+Seal textPath pinned with textLength (tail wrapped over start before).
+Contact-form failure diagnosed live: EmailJS returns 400 "service ID not found" —
+stale/malformed .env from May 2025 (template ID 33 chars, clearly wrong); user to
+supply fresh IDs from dashboard; .env untracked from git + gitignored.
+Full conventions rewritten. See frontend-conventions.md.
+
 ## 2026-07-11 — Portfolio revamp, Phases 0–1
 
 **Context:** prior session fixed layout bugs (About narrow columns, Contact overlap — root

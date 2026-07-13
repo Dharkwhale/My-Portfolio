@@ -36,7 +36,7 @@ const capabilities = [
   {
     area: "ai / llm",
     detail:
-      "Claude API agents — reasoning loops, SSE-streamed reasoning UIs, event-interest recommendation modeling",
+      "Claude API agents: reasoning loops, SSE-streamed reasoning UIs, event-interest recommendation modeling",
     weight: "solid",
   },
   {
@@ -51,7 +51,7 @@ export const About = () => {
   const row = staggerRow(reduce);
 
   return (
-    <section id="about" className="relative scroll-mt-16 px-6 py-24 md:py-32">
+    <section id="about" className="relative scroll-mt-16 px-6 py-20 md:py-24">
       <div className="mx-auto w-full max-w-6xl">
         <RevealOnScroll>
           <RuleReveal />
@@ -61,7 +61,7 @@ export const About = () => {
           {/* Prose below is the previously shipped copy — flagged for the
               user's own rewrite; structure only changed here. */}
           <p className="mt-5 max-w-[60ch] text-[clamp(1rem,0.95rem+0.3vw,1.125rem)] leading-relaxed text-annotation">
-            I&apos;m a frontend engineer who likes the unglamorous parts — state
+            I&apos;m a frontend engineer who likes the unglamorous parts: state
             that behaves, layouts that hold up, motion that earns its place. I
             turn complex problems into interfaces that feel obvious to use.
           </p>
@@ -74,9 +74,9 @@ export const About = () => {
               <h3 className="data-label">method</h3>
               <ul className="mt-3">
                 {[
-                  "Ship readable, maintainable React — components that the next developer can pick up without a map.",
+                  "Ship readable, maintainable React: components that the next developer can pick up without a map.",
                   "Treat performance and accessibility as features, not afterthoughts.",
-                  "Sweat the details users never consciously notice — the ones that make software feel right.",
+                  "Sweat the details users never consciously notice, the ones that make software feel right.",
                 ].map((item) => (
                   <li
                     key={item}

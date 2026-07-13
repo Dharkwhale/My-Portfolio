@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import emailjs from "emailjs-com";
 import { RevealOnScroll, RuleReveal } from "../RevealOnScroll";
+import { staggerParent, staggerRow } from "../../lib/motion";
 
 const channels = [
   { label: "email", href: "mailto:tstundes@gmail.com", value: "tstundes@gmail.com" },
@@ -11,6 +13,8 @@ const channels = [
 
 export const Contact = () => {
   const formRef = useRef();
+  const reduce = useReducedMotion();
+  const row = staggerRow(reduce);
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState(""); // sending | sent | error
 
@@ -41,7 +45,7 @@ export const Contact = () => {
     "w-full border-0 border-b-[1.5px] border-ink bg-transparent px-0 py-2.5 text-[15px] text-ink placeholder:text-annotation/60 transition-colors duration-200 focus:border-stamp focus-visible:outline-none";
 
   return (
-    <section id="contact" className="relative scroll-mt-16 px-6 py-24 md:py-32">
+    <section id="contact" className="relative scroll-mt-16 px-6 py-20 md:py-24">
       <div className="mx-auto w-full max-w-6xl">
         <RevealOnScroll>
           <RuleReveal />
@@ -59,10 +63,17 @@ export const Contact = () => {
           <RevealOnScroll delay={0.05} className="md:col-span-5">
             <div>
               <h3 className="data-label">channels</h3>
-              <ul className="mt-3">
+              <motion.ul
+                variants={staggerParent}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-40px" }}
+                className="mt-3"
+              >
                 {channels.map(({ label, href, value }) => (
-                  <li
+                  <motion.li
                     key={label}
+                    variants={row}
                     className="flex items-baseline justify-between gap-4 border-b border-rule py-4 last:border-b-0"
                   >
                     <span className="font-mono text-[12px] text-annotation">
@@ -80,19 +91,19 @@ export const Contact = () => {
                     ) : (
                       <span className="text-[14.5px] text-ink">{value}</span>
                     )}
-                  </li>
+                  </motion.li>
                 ))}
-              </ul>
+              </motion.ul>
             </div>
           </RevealOnScroll>
 
           {/* Form — document fields */}
           <RevealOnScroll delay={0.1} className="md:col-span-7">
-            <form ref={formRef} onSubmit={handleSubmit}>
+            <form ref={formRef} onSubmit={handleSubmit} className="panel p-6 sm:p-8">
               <h3 className="data-label">correspondence</h3>
               <div className="mt-3 grid gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div>
-                  <label htmlFor="name" className="data-label block">
+                  <label htmlFor="name" className="data-label mb-2 block">
                     name
                   </label>
                   <input
@@ -108,7 +119,7 @@ export const Contact = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="data-label block">
+                  <label htmlFor="email" className="data-label mb-2 block">
                     email
                   </label>
                   <input
@@ -126,7 +137,7 @@ export const Contact = () => {
               </div>
 
               <div className="mt-6">
-                <label htmlFor="message" className="data-label block">
+                <label htmlFor="message" className="data-label mb-2 block">
                   message
                 </label>
                 <textarea
@@ -155,7 +166,7 @@ export const Contact = () => {
                 <p aria-live="polite" className="min-h-5 text-[14px]">
                   {status === "sent" && (
                     <span className="font-mono text-[12.5px] text-ink">
-                      received — I&apos;ll get back to you soon.
+                      received. I&apos;ll get back to you soon.
                     </span>
                   )}
                   {status === "error" && (
@@ -172,14 +183,9 @@ export const Contact = () => {
         {/* Footer — the document's closing line */}
         <div className="mt-24">
           <div className="rule-hair" />
-          <div className="flex flex-col items-start justify-between gap-2 pt-6 sm:flex-row sm:items-baseline">
-            <p className="font-mono text-[12px] text-annotation">
-              © {new Date().getFullYear()} salman sanusi
-            </p>
-            <p className="font-mono text-[12px] text-annotation">
-              rev 2026.07 · set in schibsted grotesk &amp; fragment mono
-            </p>
-          </div>
+          <p className="pt-6 text-center font-mono text-[12px] text-annotation">
+            Designed &amp; built by Salman Sanusi · {new Date().getFullYear()}
+          </p>
         </div>
       </div>
     </section>

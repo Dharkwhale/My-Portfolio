@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment (EmailJS ids are client-public, but env files stay local)
+.env
+.env.*
+!.env.example

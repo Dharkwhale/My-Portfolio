@@ -1,24 +1,25 @@
 @import "tailwindcss";
 
 /* ============================================================
-   FIELD NOTES — design tokens
-   The portfolio as a working engineering document.
-   Paper · ink · one stamp-red accent. No cards, no atmosphere.
+   FIELD NOTES · DAYLIGHT — design tokens
+   The portfolio as a working engineering document with warmth:
+   toned paper (not white), grain, print-red stamps, a rotating
+   seal, and a living marquee. Character over austerity.
    Full conventions: docs/ai-memory/frontend-conventions.md
    ============================================================ */
 @theme {
-  /* Surfaces */
-  --color-paper: #fafaf6;
-  --color-field: #f0f0e8;
+  /* Surfaces — genuinely toned warm paper, never washed-out white */
+  --color-paper: #f1ede3;
+  --color-field: #e9e4d6;
 
   /* Ink ramp (annotation verified ≥4.5:1 on paper) */
-  --color-ink: #171713;
-  --color-annotation: #62625a;
+  --color-ink: #201d17;
+  --color-annotation: #635d4e;
 
   /* Hairline row rule (structural borders use ink at 1.5px) */
-  --color-rule: rgba(23, 23, 19, 0.18);
+  --color-rule: rgba(32, 29, 23, 0.16);
 
-  /* Single accent — stamps, links, one primary action per view */
+  /* Print-red accent — stamps, seal, links, one primary action per view */
   --color-stamp: #c8102e;
 
   --font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
@@ -31,6 +32,10 @@
   --dur-base: 300ms;
   --dur-entrance: 450ms;
   --ease-crisp: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Depth — print-like sheet shadow on the paper ground */
+  --shadow-panel: 0 18px 40px -18px rgba(32, 29, 23, 0.28),
+    0 2px 6px rgba(32, 29, 23, 0.06);
 
   /* Semantic z-scale */
   --z-base: 0;
@@ -67,7 +72,7 @@ p {
 
 ::selection {
   background: var(--color-stamp);
-  color: var(--color-paper);
+  color: #f1ede3;
 }
 
 /* Focus visibility — stamp-red ring, never removed */
@@ -83,7 +88,7 @@ p {
   background: var(--color-paper);
 }
 ::-webkit-scrollbar-thumb {
-  background: #d6d6ca;
+  background: #cfc8b6;
   border: 2px solid var(--color-paper);
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -94,6 +99,45 @@ p {
 .rule-ink {
   height: 1.5px;
   background: var(--color-ink);
+}
+
+/* Elevated document panel — depth without cards-with-rounded-everything */
+.panel {
+  background: var(--color-field);
+  border: 1px solid var(--color-rule);
+  box-shadow: var(--shadow-panel);
+}
+
+/* Paper grain — fine noise multiplied over the toned paper. Static texture. */
+.paper-grain {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Living marquee — the one deliberate loop. Pauses on hover. */
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 36s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }
 
 /* Hairline — 1px, table rows and quiet dividers */

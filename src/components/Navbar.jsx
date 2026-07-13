@@ -40,8 +40,10 @@ export const Navbar = ({ menuOpen, setMenuOpen }) => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: EASE_CRISP }}
       style={{ zIndex: "var(--z-nav)" }}
-      className={`fixed top-0 w-full bg-paper transition-shadow duration-300 ${
-        scrolled ? "shadow-[0_1.5px_0_0_var(--color-ink)]" : ""
+      className={`fixed top-0 w-full transition-[background-color,box-shadow] duration-300 ${
+        scrolled
+          ? "bg-paper/85 backdrop-blur-md shadow-[0_1px_0_0_var(--color-rule)]"
+          : "bg-transparent"
       }`}
     >
       <div className="mx-auto max-w-6xl px-6">
